@@ -1,8 +1,248 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <script>
-      location.replace("https://levisergi.github.io/SCbassfishing/");
-    </script>
-  </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Levi the Editor | Portfolio</title>
+    <style>
+        :root {
+            --bg-color: #0d0d0e;
+            --text-color: #e4e4e7;
+            --accent-color: #e11d48; /* Crimson Red */
+            --card-bg: #18181b;
+            --border-color: #27272a;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0 40px 0;
+        }
+
+        .banner {
+            background-color: #111113;
+            padding: 65px 20px;
+            border-radius: 4px;
+            border-top: 4px solid var(--accent-color);
+            border-bottom: 1px solid var(--border-color);
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: 3.6rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin: 0 0 10px 0;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            font-size: 1.05rem;
+            color: #a1a1aa;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        section {
+            margin: 70px 0;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #fff;
+            margin-bottom: 30px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #3f3f46;
+            background-color: #202023;
+        }
+
+        .card h3 {
+            color: #fff;
+            margin-top: 0;
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        .card p {
+            color: #a1a1aa;
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .video-card {
+            background-color: var(--card-bg);
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: scale(1.02);
+            border-color: var(--accent-color);
+        }
+
+        .thumbnail-img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(15%);
+            transition: filter 0.3s ease;
+        }
+
+        .video-card:hover .thumbnail-img {
+            filter: grayscale(0%);
+        }
+
+        .pitch-box {
+            background: #111113;
+            padding: 50px 40px;
+            border-radius: 4px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .pitch-box h2 {
+            border-bottom: none;
+            padding-bottom: 0;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .pitch-box p {
+            color: #a1a1aa;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            font-size: 1.05rem;
+        }
+
+        .contact-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .contact-list li {
+            background: var(--card-bg);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .contact-list li:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="banner">
+                <h1>LEVI The Editor</h1>
+                <p class="tagline">Bringing stories to life through dynamic, engaging, and polished video editing.</p>
+            </div>
+        </header>
+
+        <section id="about">
+            <h2>About & Skills</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Experience</h3>
+                    <p>3 years of hands-on experience creating high-quality content across various platforms.</p>
+                </div>
+                <div class="card">
+                    <h3>Software & Tools</h3>
+                    <p>CapCut, Canva, and more.</p>
+                </div>
+                <div class="card">
+                    <h3>Commitment</h3>
+                    <p>Quick turnaround times, open communication, and flexible revisions until you are 100% satisfied.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="work">
+            <h2>Featured Work</h2>
+            <div class="video-grid">
+                <div class="video-card">
+                    <img src="fe7661a4-c752-41f2-92f5-2f9a7b4c5376.png" alt="Featured Thumbnail 1" class="thumbnail-img">
+                </div>
+                <div class="video-card">
+                    <img src="ab4434a4-945e-4817-9a6f-7858102ce532.png" alt="Featured Thumbnail 2" class="thumbnail-img">
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="pitch-box">
+                <h2>Let's Work Together!</h2>
+                <p>I’d love to help with your project. I can easily edit in the exact style you are looking for and am always happy to make revisions to ensure the final product is perfect.</p>
+                <ul class="contact-list">
+                    <li>📧 Email: Levisergi23@gmail.com</li>
+                    <li>💬 Discord: levisergi</li>
+                    <li>⏱️ Availability: Ready to start immediately</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+</body>
 </html>
