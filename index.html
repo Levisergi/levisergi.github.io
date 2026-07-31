@@ -1,711 +1,440 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="/b02c5410-6de1-475b-8045-59470dbca824.png">
-    <title>Levi The Editor | High-Retention Video Editing</title>
-    <style>
-        /* Global Styles & Variables */
-        :root {
-            --bg-color: #0d0d0d;
-            --card-bg: #161616;
-            --accent-color: #ff1e27;
-            --accent-hover: #b31017;
-            --text-main: #ffffff;
-            --text-muted: #aaaaaa;
-            --border-glow: rgba(255, 30, 39, 0.15);
-            --star-color: #ff1e27;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Levi | High-Retention Video Editor</title>
+  
+  <!-- LTE SVG FAVICON -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%23090a10' stroke='%238b5cf6' stroke-width='2.5' stroke-opacity='0.6'/><text x='32' y='41' font-family='system-ui, sans-serif' font-size='22' font-weight='900' letter-spacing='-1.5' text-anchor='middle' fill='%238b5cf6'>LTE</text></svg>">
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            scroll-behavior: smooth;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090a10;
+      --card-bg: rgba(255, 255, 255, 0.02);
+      --card-border: rgba(255, 255, 255, 0.07);
+      --primary: #8b5cf6;
+      --primary-hover: #7c3aed;
+      --text: #f3f4f6;
+      --text-dim: #9ca3af;
+      --green: #10b981;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-            padding: 0 0 40px 0;
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
+    
+    .glow { position: fixed; width: 600px; height: 600px; background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, rgba(0,0,0,0) 70%); top: -150px; left: 50%; transform: translateX(-50%); pointer-events: none; z-index: 0; }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 25px 8%; background: rgba(9, 10, 16, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 50; }
+    
+    /* CLICKABLE LOGO TO HOME */
+    .logo { font-size: 1.2rem; font-weight: 800; cursor: pointer; letter-spacing: -0.5px; user-select: none; }
+    .logo span { color: var(--primary); }
+    
+    /* NAV BUTTONS */
+    nav button { background: none; border: none; color: var(--text-dim); margin-left: 24px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: 0.2s ease; padding: 0; }
+    nav button:hover, nav button.active { color: var(--text); }
 
-        /* WIDE AND COMPACT BANNER */
-        header {
-            text-align: center;
-            padding: 70px 20px 50px 20px;
-            background: linear-gradient(180deg, #1a0506 0%, var(--bg-color) 100%);
-            border-bottom: 1px solid var(--border-glow);
-            margin-bottom: 20px;
-            width: 100%;
-            position: relative;
-        }
+    /* PAGE VISIBILITY LOGIC */
+    .page-content { display: none; }
+    .page-content.active { display: block; }
 
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--accent-color);
-        }
+    /* HERO */
+    .hero { text-align: center; padding: 80px 20px 40px; max-width: 900px; margin: 0 auto; }
+    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: var(--green); border-radius: 30px; font-size: 0.85rem; font-weight: 600; margin-bottom: 25px; }
+    .dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; box-shadow: 0 0 8px var(--green); }
+    h1 { font-size: 3.8rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; letter-spacing: -1.5px; }
+    h1 span { background: linear-gradient(135deg, #a78bfa, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    p.sub { color: var(--text-dim); font-size: 1.15rem; max-width: 650px; margin: 0 auto 35px; line-height: 1.6; }
+    
+    .cta-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+    .btn { padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; transition: 0.2s ease; display: inline-block; cursor: pointer; border: none; }
+    .btn-main { background: var(--primary); color: white; box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3); }
+    .btn-main:hover { background: var(--primary-hover); transform: translateY(-2px); }
+    .btn-sub { background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text); }
+    .btn-sub:hover { border-color: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
 
-        h1 {
-            font-size: 3rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            font-weight: 900;
-        }
+    /* LAYOUT GRIDS */
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; width: 100%; }
+    .section-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 10px; }
+    .section-desc { color: var(--text-dim); margin-bottom: 40px; }
 
-        h1 span {
-            color: var(--accent-color);
-            text-shadow: 0 0 15px rgba(255, 30, 39, 0.5);
-        }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 60px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 60px; }
 
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 700px;
-            margin: 0 auto 25px auto;
-        }
+    /* FEATURE CARDS */
+    .feature-card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 35px 30px;
+      position: relative;
+      backdrop-filter: blur(12px);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
 
-        /* Sub-navigation Menu */
-        .nav-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: 20px; right: 20px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.4), transparent);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
 
-        .nav-btn {
-            background: none;
-            border: 1px solid #333;
-            color: var(--text-muted);
-            padding: 8px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            transition: all 0.2s ease;
-        }
+    .feature-card:hover {
+      border-color: rgba(139, 92, 246, 0.5);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -15px rgba(139, 92, 246, 0.2);
+    }
 
-        .nav-btn:hover, .nav-btn.active {
-            border-color: var(--accent-color);
-            color: white;
-            background-color: rgba(255, 30, 39, 0.05);
-        }
+    .feature-card:hover::before { opacity: 1; }
 
-        /* Section Headings */
-        h2 {
-            font-size: 1.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 25px;
-            border-left: 4px solid var(--accent-color);
-            padding-left: 15px;
-        }
+    .feature-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 22px;
+      color: #a78bfa;
+    }
 
-        section {
-            margin-bottom: 60px;
-        }
+    .feature-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; color: var(--text); }
+    .feature-card p { color: var(--text-dim); font-size: 0.95rem; line-height: 1.6; }
 
-        /* View Content Animation Toggles */
-        .page-view {
-            display: block;
-        }
-        .page-view.hidden {
-            display: none;
-        }
+    /* SOFTWARE STRIP */
+    .software-strip {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 25px 30px;
+      margin-top: -20px;
+      margin-bottom: 60px;
+      text-align: center;
+    }
 
-        /* Grid Layouts */
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
+    .software-strip h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); margin-bottom: 18px; }
+    .software-badges { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .soft-badge { padding: 8px 18px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); border-radius: 30px; font-size: 0.9rem; font-weight: 600; color: var(--text); transition: 0.25s ease; display: flex; align-items: center; gap: 8px; }
+    .soft-badge:hover { border-color: var(--primary); background: rgba(139, 92, 246, 0.1); transform: translateY(-2px); }
 
-        .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
-        }
+    /* GENERAL CARDS */
+    .review-card, .pricing-card, .portfolio-card { 
+      background: var(--card-bg); 
+      border: 1px solid var(--card-border); 
+      border-radius: 16px; 
+      transition: all 0.3s ease; 
+    }
 
-        .grid-shorts {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 30px;
-            justify-content: center;
-        }
+    .review-card:hover, .pricing-card:hover, .portfolio-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+    }
 
-        /* Feature Cards & Pricing Cards */
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid #222;
-            padding: 30px;
-            border-radius: 8px;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-            position: relative;
-        }
+    /* PORTFOLIO YOUTUBE CARDS */
+    .portfolio-card { overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; }
+    .video-box { width: 100%; aspect-ratio: 16/9; background: #000; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .video-box img { width: 100%; height: 100%; object-fit: cover; }
+    .video-play-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s ease; }
+    .video-play-overlay:hover { background: rgba(139, 92, 246, 0.3); }
+    .play-icon-circle { width: 50px; height: 50px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 1.2rem; padding-left: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+    .portfolio-info { padding: 20px; }
+    .btn-play { margin-top: 15px; width: 100%; padding: 10px; background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text); font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+    .btn-play:hover { background: var(--primary); border-color: var(--primary); }
 
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-color);
-            box-shadow: 0 10px 20px rgba(255, 30, 39, 0.05);
-        }
+    /* YOUTUBE MODAL POPUP */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(8px); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
+    .modal.active { display: flex; }
+    .modal-content { background: var(--bg); border: 1px solid var(--card-border); border-radius: 16px; max-width: 850px; width: 100%; overflow: hidden; position: relative; box-shadow: 0 0 50px rgba(139, 92, 246, 0.2); }
+    .modal-close { position: absolute; top: 15px; right: 20px; background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer; z-index: 101; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+    .modal-video-container { width: 100%; aspect-ratio: 16/9; background: black; }
+    .modal-video-container iframe { width: 100%; height: 100%; border: none; }
 
-        .card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            color: var(--text-main);
-        }
+    /* PRICING */
+    .pricing-card { padding: 35px; text-align: center; }
+    .pricing-card.featured { border-color: var(--primary); box-shadow: 0 0 30px rgba(139, 92, 246, 0.15); }
+    .price { font-size: 2.2rem; font-weight: 800; margin: 15px 0; }
+    .price-list { list-style: none; text-align: left; margin: 20px 0; color: var(--text-dim); font-size: 0.9rem; }
+    .price-list li { margin-bottom: 10px; }
+    .price-list li::before { content: "✓ "; color: var(--primary); font-weight: bold; }
 
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
+    /* REVIEWS & CONTACT */
+    .review-card { padding: 25px; }
+    .review-head { display: flex; justify-content: space-between; margin-bottom: 12px; }
+    .stars { color: var(--primary); letter-spacing: 2px; }
 
-        /* Pricing Card Overrides */
-        .price-tag {
-            font-size: 1.8rem;
-            color: var(--accent-color);
-            font-weight: 800;
-            margin: 10px 0 15px 0;
-            text-shadow: 0 0 10px rgba(255, 30, 39, 0.2);
-        }
+    .contact-card { background: var(--card-bg); border: 1px solid var(--primary); border-radius: 20px; padding: 50px 30px; text-align: center; box-shadow: 0 0 40px rgba(139, 92, 246, 0.15); max-width: 800px; margin: 20px auto 0; }
 
-        .includes-list {
-            list-style: none;
-            margin-top: 15px;
-            border-top: 1px solid #222;
-            padding-top: 15px;
-        }
-
-        .includes-list li {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .includes-list li::before {
-            content: '✓';
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-
-        /* Terms Box Layout */
-        .terms-box {
-            background-color: #111;
-            border: 1px dashed #333;
-            border-radius: 8px;
-            padding: 25px;
-            margin-top: 30px;
-        }
-
-        .terms-box h4 {
-            text-transform: uppercase;
-            color: white;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
-
-        .terms-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-        }
-
-        .term-item strong {
-            color: var(--accent-color);
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        .term-item p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        /* Portfolio Work Elements */
-        .portfolio-item {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid #222;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: block;
-            width: 100%;
-        }
-
-        .portfolio-item:hover {
-            transform: scale(1.03);
-            border-color: var(--accent-color);
-        }
-
-        .thumbnail-container {
-            position: relative;
-            width: 100%;
-            padding-top: 140%;
-            background-color: #000;
-        }
-
-        .thumbnail-container img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .portfolio-item:hover .video-overlay {
-            opacity: 1;
-        }
-
-        .play-btn {
-            background: var(--accent-color);
-            color: white;
-            padding: 10px 18px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            box-shadow: 0 0 15px var(--accent-color);
-        }
-
-        .portfolio-details {
-            padding: 15px;
-        }
-
-        .portfolio-details h3 {
-            color: var(--text-main);
-            margin-bottom: 6px;
-            font-size: 1rem;
-        }
-
-        .portfolio-details p {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            line-height: 1.4;
-        }
-
-        .transform-badge {
-            background: #ff1e27;
-            color: white;
-            font-size: 0.75rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            padding: 2px 8px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 5px;
-        }
-
-        /* Review Section Styling */
-        .review-card {
-            background-color: var(--card-bg);
-            border: 1px solid #1f1f1f;
-            border-radius: 8px;
-            padding: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .review-card:hover {
-            border-color: var(--accent-color);
-            box-shadow: 0 5px 15px rgba(255, 30, 39, 0.05);
-        }
-
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .reviewer-info h4 {
-            color: var(--text-main);
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .review-stars {
-            color: var(--star-color);
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-        }
-
-        .review-text {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            font-style: italic;
-            line-height: 1.6;
-        }
-
-        /* Contact Section */
-        .cta-box {
-            background: linear-gradient(135deg, #161616 0%, #200507 100%);
-            border: 1px solid var(--accent-color);
-            border-radius: 12px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(255, 30, 39, 0.05);
-        }
-
-        .cta-box h3 {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        .cta-box p {
-            color: var(--text-muted);
-            margin-bottom: 30px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .btn-container {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            padding: 14px 28px;
-            border-radius: 6px;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 0.9rem;
-            letter-spacing: 0.5px;
-            transition: all 0.2s ease;
-        }
-
-        .btn-primary {
-            background-color: var(--accent-color);
-            color: white;
-            box-shadow: 0 4px 15px rgba(255, 30, 39, 0.3);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: white;
-            border: 1px solid #444;
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--accent-color);
-            background-color: rgba(255, 30, 39, 0.05);
-            transform: translateY(-2px);
-        }
-
-        .status-badge {
-            display: inline-block;
-            background-color: rgba(0, 230, 115, 0.1);
-            color: #00e673;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-top: 25px;
-            border: 1px solid rgba(0, 230, 115, 0.2);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            h1 { font-size: 2.2rem; }
-            .cta-box { padding: 30px 15px; }
-            .grid-2 { grid-template-columns: 1fr; }
-        }
-    </style>
+    footer { text-align: center; padding: 30px; border-top: 1px solid var(--card-border); color: var(--text-dim); font-size: 0.85rem; }
+  </style>
 </head>
 <body>
+  <div class="glow"></div>
 
-    <header>
-        <h1>Levi <span>The Editor</span></h1>
-        <p class="hero-subtitle">High-retention video editing built to keep your viewers hooked. Specializing in fast-paced storytelling, viral short-form pacing, and high-CTR visual hooks.</p>
+  <header>
+    <!-- TOP LEFT LOGO - CLICK TO GO HOME -->
+    <div class="logo" onclick="switchTab('home')">LEVI <span>THE EDITOR</span></div>
+    <nav>
+      <button id="tab-home" class="active" onclick="switchTab('home')">Home</button>
+      <button id="tab-portfolio" onclick="switchTab('portfolio')">Portfolio & Rates</button>
+      <button id="tab-reviews" onclick="switchTab('reviews')">Reviews</button>
+      <button id="tab-contact" onclick="switchTab('contact')">Contact Me</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- PAGE 1: HOME -->
+    <div id="page-home" class="page-content active">
+      <section class="hero">
+        <div class="badge"><span class="dot"></span> Ready to start immediately</div>
+        <h1>High-Retention Edits Built To <span>Hook Viewers</span></h1>
+        <p class="sub">Specializing in fast-paced storytelling, viral short-form pacing, and high-CTR visual hooks designed to scale creators and brands.</p>
         
-        <div class="nav-links">
-            <button class="nav-btn active" onclick="switchPage('portfolio')">Portfolio</button>
-            <button class="nav-btn" onclick="switchPage('pricing')">Rates & Pricing</button>
-            <button class="nav-btn" onclick="switchPage('ratings')">Client Ratings</button>
+        <!-- BUTTON GROUP WITH VIEW PAST WORKS -->
+        <div class="cta-group">
+          <button onclick="switchTab('portfolio')" class="btn btn-main">View Portfolio</button>
+          <button onclick="switchTab('portfolio')" class="btn btn-sub">View Past Works</button>
+          <button onclick="switchTab('contact')" class="btn btn-sub">Contact Me</button>
         </div>
-    </header>
+      </section>
 
-    <div class="container">
+      <section class="container">
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="feature-icon-box">⚡</div>
+            <h3>Algorithm Pacing</h3>
+            <p>3+ years mastering frame-by-frame audience retention. I eliminate dead air and build momentum so viewers don't swipe away.</p>
+          </div>
 
-        <div id="portfolio-view" class="page-view">
-            <section>
-                <h2>Why Creators Choose Me</h2>
-                <div class="grid-3">
-                    <div class="card">
-                        <h3>Algorithm Pacing</h3>
-                        <p>3+ years of mastering frame-by-frame audience retention. I eliminate dead air and build momentum to keep viewers from swiping away.</p>
-                    </div>
-                    <div class="card">
-                        <h3>Heavy Visual FX</h3>
-                        <p>Advanced CapCut Pro & Canva pipeline. Delivering seamless text tracking, custom sound design, zoom mapping, and explosive graphic overlays.</p>
-                    </div>
-                    <div class="card">
-                        <h3>0% Friction Workflow</h3>
-                        <p>Lightning-fast turnaround times, clear communication over Discord, and endless revisions until your video hits completely perfectly.</p>
-                    </div>
-                </div>
-            </section>
+          <div class="feature-card">
+            <div class="feature-icon-box">🎬</div>
+            <h3>Pro Post-Production</h3>
+            <p>Leveraging DaVinci Resolve, CapCut Pro, and Canva pipelines for precise color grading, motion graphics, zoom mapping, and sound design.</p>
+          </div>
 
-            <section>
-                <h2>Featured Content</h2>
-                <div class="grid-shorts">
-                    
-                    <a href="https://www.youtube.com/shorts/MKDtBhA4zDo" target="_blank" class="portfolio-item">
-                        <div class="thumbnail-container">
-                            <img src="https://i.ytimg.com/vi/MKDtBhA4zDo/maxresdefault.jpg" alt="IShowSpeed Bodyguard Edit">
-                            <div class="video-overlay">
-                                <span class="play-btn">Watch Short</span>
-                            </div>
-                        </div>
-                        <div class="portfolio-details">
-                            <span class="transform-badge">Pacing & Flow</span>
-                            <h3>IShowSpeed Bodyguard Edit</h3>
-                            <p>High-energy visual pacing, heavy frame cuts, and seamless sound impact syncs.</p>
-                        </div>
-                    </a>
-
-                    <a href="https://www.youtube.com/shorts/7kbGNizXd80" target="_blank" class="portfolio-item">
-                        <div class="thumbnail-container">
-                            <img src="https://i.ytimg.com/vi/7kbGNizXd80/maxresdefault.jpg" alt="Featured Edit 2">
-                            <div class="video-overlay">
-                                <span class="play-btn">Watch Short</span>
-                            </div>
-                        </div>
-                        <div class="portfolio-details">
-                            <span class="transform-badge">Before vs After</span>
-                            <h3>Retention Transformation</h3>
-                            <p>Turning standard raw footage into high-engagement content using custom tracking maps.</p>
-                        </div>
-                    </a>
-
-                    <a href="https://www.youtube.com/shorts/fe5eajtMt-A" target="_blank" class="portfolio-item">
-                        <div class="thumbnail-container">
-                            <img src="https://i.ytimg.com/vi/fe5eajtMt-A/maxresdefault.jpg" alt="Subscriber Strategy Edit">
-                            <div class="video-overlay">
-                                <span class="play-btn">Watch Short</span>
-                            </div>
-                        </div>
-                        <div class="portfolio-details">
-                            <span class="transform-badge">Growth Hook</span>
-                            <h3>1,000 Subscribers Strategy</h3>
-                            <p>Rapid informational pacing and split-second concept transitions built for educational niches.</p>
-                        </div>
-                    </a>
-
-                </div>
-            </section>
+          <div class="feature-card">
+            <div class="feature-icon-box">🤝</div>
+            <h3>0% Friction Workflow</h3>
+            <p>Lightning-fast turnaround times, clear communication over Discord, and endless revisions until your video hits perfectly.</p>
+          </div>
         </div>
 
-        <div id="pricing-view" class="page-view hidden">
-            <section>
-                <h2>Rates & Packages</h2>
-                <div class="grid-2">
-                    
-                    <div class="card">
-                        <h3>Short-Form Videos</h3>
-                        <p>TikToks, Reels, YouTube Shorts</p>
-                        <div class="price-tag">$5 – $10 <span style="font-size:1rem;color:var(--text-muted);font-weight:normal;">/ video</span></div>
-                        <ul class="includes-list">
-                            <li>Basic dynamic cuts</li>
-                            <li>Standard synced text & captions</li>
-                            <li>Trending background music</li>
-                        </ul>
-                    </div>
-
-                    <div class="card">
-                        <h3>Fan Edits & Montages</h3>
-                        <p>Anime edits, celebrity/character edits, montage sequences</p>
-                        <div class="price-tag">$15 – $20 <span style="font-size:1rem;color:var(--text-muted);font-weight:normal;">/ video</span></div>
-                        <ul class="includes-list">
-                            <li>Advanced music beat-syncing</li>
-                            <li>Premium transitions & visual FX</li>
-                            <li>Color grading & specialized filters</li>
-                        </ul>
-                    </div>
-
-                    <div class="card">
-                        <h3>Vlogs & Daily Life</h3>
-                        <p>YouTube vlogs, travel clips, lifestyle updates</p>
-                        <div class="price-tag">$15 – $20 <span style="font-size:1rem;color:var(--text-muted);font-weight:normal;">/ video</span></div>
-                        <ul class="includes-list">
-                            <li>Engaging content pacing & structure</li>
-                            <li>Clean cut narrative transitions</li>
-                            <li>Basic audio leveling & color correction</li>
-                        </ul>
-                    </div>
-
-                    <div class="card">
-                        <h3>Long-Form Videos</h3>
-                        <p>YouTube content, tutorials, gaming videos, or podcasts (over 10 mins)</p>
-                        <div class="price-tag">$30 – $40 <span style="font-size:1rem;color:var(--text-muted);font-weight:normal;">/ video</span></div>
-                        <ul class="includes-list">
-                            <li>Full strategic video assembly</li>
-                            <li>B-roll contextual insertion</li>
-                            <li>Audio balancing, pacing layout, text titles</li>
-                        </ul>
-                    </div>
-
-                </div>
-
-                <div class="terms-box">
-                    <h4>Project Terms (The Fine Print)</h4>
-                    <div class="terms-grid">
-                        <div class="term-item">
-                            <strong>Revisions</strong>
-                            <p>1 free round of minor changes included. Additional revision cycles are $5 each.</p>
-                        </div>
-                        <div class="term-item">
-                            <strong>Turnaround Time</strong>
-                            <p>Completed assets delivered quickly within 3 to 5 business days.</p>
-                        </div>
-                        <div class="term-item">
-                            <strong>Requirement</strong>
-                            <p>Client must provide a quick review/testimonial upon final project completion.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <!-- SOFTWARE & EDITING TOOLS STRIP -->
+        <div class="software-strip">
+          <h4>Editing Software & Production Stack</h4>
+          <div class="software-badges">
+            <span class="soft-badge">🎨 DaVinci Resolve</span>
+            <span class="soft-badge">✂️ CapCut Pro</span>
+            <span class="soft-badge">🖼️ Canva</span>
+            <span class="soft-badge">🎧 Custom Sound Design</span>
+          </div>
         </div>
-
-        <div id="ratings-view" class="page-view hidden">
-            <section>
-                <h2>What Clients Say</h2>
-                <div class="grid-2">
-                    
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="reviewer-info"><h4>Sarah Jenkins</h4></div>
-                            <div class="review-stars">★★★★★</div>
-                        </div>
-                        <p class="review-text">"The editor brought my vlog to life, great work on the pacing and colors!"</p>
-                    </div>
-
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="reviewer-info"><h4>Mike T.</h4></div>
-                            <div class="review-stars">★★★★★</div>
-                        </div>
-                        <p class="review-text">"Amazing edits on our wedding video. Understood exactly what we wanted."</p>
-                    </div>
-
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="reviewer-info"><h4>Ben Carter</h4></div>
-                            <div class="review-stars">★★★★★</div>
-                        </div>
-                        <p class="review-text">"Super professional editor, they took my raw footage and made a masterpiece."</p>
-                    </div>
-
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="reviewer-info"><h4>Daniel Kim</h4></div>
-                            <div class="review-stars">★★★★★</div>
-                        </div>
-                        <p class="review-text">"Excellent editing, the narrative flow is so much better now. Highly recommended!"</p>
-                    </div>
-
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="reviewer-info"><h4>Aria Sharma</h4></div>
-                            <div class="review-stars">★★★★★</div>
-                        </div>
-                        <p class="review-text">"Fast and creative. The transitions and music selection are perfect for my content."</p>
-                    </div>
-
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="reviewer-info"><h4>Lisa W.</h4></div>
-                            <div class="review-stars">★★★★★</div>
-                        </div>
-                        <p class="review-text">"I've tried a few editors, but this one is the best for social media clips."</p>
-                    </div>
-
-                </div>
-            </section>
-        </div>
-
-        <section>
-            <div class="cta-box">
-                <h3>Let's Scale Your Channel</h3>
-                <p>Ready to level up your retention metrics? Drop me a message with details about your next project, and let's get to work.</p>
-                
-                <div class="btn-container">
-                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=levisergi23@gmail.com" target="_blank" class="btn btn-primary">EMAIL levisergi23@gmail.com</a>
-                    <a href="https://discord.com" target="_blank" class="btn btn-secondary">DISCORD levisergi</a>
-                </div>
-
-                <div class="status-badge">
-                    ● Current Availability: Ready to start immediately
-                </div>
-            </div>
-        </section>
-
+      </section>
     </div>
 
-    <script>
-        function switchPage(viewName) {
-            // Hide all views
-            document.querySelectorAll('.page-view').forEach(view => view.classList.add('hidden'));
-            // Remove active status from all navigation buttons
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            
-            // Activate the selected view and its button link
-            if(viewName === 'portfolio') {
-                document.getElementById('portfolio-view').classList.remove('hidden');
-            } else if(viewName === 'pricing') {
-                document.getElementById('pricing-view').classList.remove('hidden');
-            } else if(viewName === 'ratings') {
-                document.getElementById('ratings-view').classList.remove('hidden');
-            }
-            event.currentTarget.classList.add('active');
-        }
-    </script>
+    <!-- PAGE 2: PORTFOLIO & PRICING -->
+    <div id="page-portfolio" class="page-content">
+      <div class="container">
+        <h2 class="section-title">FEATURED EDITS</h2>
+        <p class="section-desc">Sample video edits optimized for retention and audience engagement.</p>
+        
+        <div class="grid-2">
+          <!-- Short 1 -->
+          <div class="portfolio-card">
+            <div class="video-box" onclick="openVideo('j3BUKhtCv7s')">
+              <img src="https://img.youtube.com/vi/j3BUKhtCv7s/hqdefault.jpg" alt="Speed Body Guard Edit">
+              <div class="video-play-overlay">
+                <div class="play-icon-circle">▶</div>
+              </div>
+            </div>
+            <div class="portfolio-info">
+              <h4>Speed Body Guard</h4>
+              <p style="color: var(--text-dim); font-size:0.85rem;">Fast-paced viral YouTube Short edit featuring custom text tracking and dynamic zoom hooks.</p>
+              <button class="btn-play" onclick="openVideo('j3BUKhtCv7s')">▶ Watch Full Video</button>
+            </div>
+          </div>
+
+          <!-- Short 2 -->
+          <div class="portfolio-card">
+            <div class="video-box" onclick="openVideo('pH2pnMzyC6M')">
+              <img src="https://img.youtube.com/vi/pH2pnMzyC6M/hqdefault.jpg" alt="Wemmbu Montage Edit">
+              <div class="video-play-overlay">
+                <div class="play-icon-circle">▶</div>
+              </div>
+            </div>
+            <div class="portfolio-info">
+              <h4>Wemmbu Montage</h4>
+              <p style="color: var(--text-dim); font-size:0.85rem;">High-energy gaming montage edit with intense sound design, SFX timing, and glow effects.</p>
+              <button class="btn-play" onclick="openVideo('pH2pnMzyC6M')">▶ Watch Full Video</button>
+            </div>
+          </div>
+
+          <!-- Short 3 -->
+          <div class="portfolio-card">
+            <div class="video-box" onclick="openVideo('nw9CFr149m8')">
+              <img src="https://img.youtube.com/vi/nw9CFr149m8/hqdefault.jpg" alt="How to Gain 1k Subscribers Edit">
+              <div class="video-play-overlay">
+                <div class="play-icon-circle">▶</div>
+              </div>
+            </div>
+            <div class="portfolio-info">
+              <h4>How to Gain 1k Subscribers</h4>
+              <p style="color: var(--text-dim); font-size:0.85rem;">Talking-head informational short-form cut with animated captions, motion graphics, and high-retention transitions.</p>
+              <button class="btn-play" onclick="openVideo('nw9CFr149m8')">▶ Watch Full Video</button>
+            </div>
+          </div>
+
+          <!-- Video 4 -->
+          <div class="portfolio-card">
+            <div class="video-box" onclick="openVideo('voqu001Ctlg')">
+              <img src="https://img.youtube.com/vi/voqu001Ctlg/hqdefault.jpg" alt="Apex Editing Showcase">
+              <div class="video-play-overlay">
+                <div class="play-icon-circle">▶</div>
+              </div>
+            </div>
+            <div class="portfolio-info">
+              <h4>Apex Editing Showcase</h4>
+              <p style="color: var(--text-dim); font-size:0.85rem;">Comprehensive editing showcase demonstrating long-form story pacing and audio leveling.</p>
+              <button class="btn-play" onclick="openVideo('voqu001Ctlg')">▶ Watch Full Video</button>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="section-title">RATES & PRICING</h2>
+        <p class="section-desc">Flexible packages tailored to your content schedule.</p>
+
+        <div class="grid-3">
+          <div class="pricing-card">
+            <h3>Short-Form Pack</h3>
+            <div class="price">Custom</div>
+            <ul class="price-list">
+              <li>Up to 60s runtime</li>
+              <li>Fast-paced subtitles & tracking</li>
+              <li>Full sound design & SFX</li>
+              <li>24–48hr turnaround</li>
+            </ul>
+            <button onclick="switchTab('contact')" class="btn btn-sub" style="width:100%;">Get Quote</button>
+          </div>
+
+          <div class="pricing-card featured">
+            <h3>Long-Form Video</h3>
+            <div class="price">Custom</div>
+            <ul class="price-list">
+              <li>DaVinci Resolve narrative pacing</li>
+              <li>Color correction & audio leveling</li>
+              <li>Custom graphics & zoom effects</li>
+              <li>Unlimited revisions</li>
+            </ul>
+            <button onclick="switchTab('contact')" class="btn btn-main" style="width:100%;">Get Quote</button>
+          </div>
+
+          <div class="pricing-card">
+            <h3>Monthly Retainer</h3>
+            <div class="price">Custom</div>
+            <ul class="price-list">
+              <li>Priority editing queue</li>
+              <li>Bulk edit discounts</li>
+              <li>Direct line on Discord</li>
+              <li>Consistent branding</li>
+            </ul>
+            <button onclick="switchTab('contact')" class="btn btn-sub" style="width:100%;">Get Quote</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: REVIEWS ONLY -->
+    <div id="page-reviews" class="page-content">
+      <div class="container">
+        <h2 class="section-title">CLIENT REVIEWS</h2>
+        <p class="section-desc">Feedback from creators and brands I've collaborated with.</p>
+
+        <div class="grid-2">
+          <div class="review-card">
+            <div class="review-head"><strong>Sarah Jenkins</strong><span class="stars">★★★★★</span></div>
+            <p style="color: var(--text-dim); font-style: italic;">"The editor brought my vlog to life, great work on the pacing and colors!"</p>
+          </div>
+          <div class="review-card">
+            <div class="review-head"><strong>Mike T.</strong><span class="stars">★★★★★</span></div>
+            <p style="color: var(--text-dim); font-style: italic;">"Amazing edits on our wedding video. Understood exactly what we wanted."</p>
+          </div>
+          <div class="review-card">
+            <div class="review-head"><strong>Ben Carter</strong><span class="stars">★★★★★</span></div>
+            <p style="color: var(--text-dim); font-style: italic;">"Super professional editor, they took my raw footage and made a masterpiece."</p>
+          </div>
+          <div class="review-card">
+            <div class="review-head"><strong>Daniel Kim</strong><span class="stars">★★★★★</span></div>
+            <p style="color: var(--text-dim); font-style: italic;">"Excellent editing, the narrative flow is so much better now."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 4: CONTACT ONLY -->
+    <div id="page-contact" class="page-content">
+      <div class="container">
+        <div class="contact-card">
+          <h2>LET'S SCALE YOUR CHANNEL</h2>
+          <p style="color: var(--text-dim); margin: 10px 0 25px;">Drop a message with details about your next project, and let's get to work.</p>
+          <div class="cta-group">
+            <a href="mailto:levisergi23@gmail.com" class="btn btn-main">EMAIL levisergi23@gmail.com</a>
+            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="btn btn-sub">DISCORD levisergi</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- YOUTUBE VIDEO POPUP MODAL -->
+  <div id="videoModal" class="modal" onclick="closeVideo()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeVideo()">&times;</button>
+      <div class="modal-video-container">
+        <iframe id="activeIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Levi The Editor. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function switchTab(tabName) {
+      document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
+      
+      document.getElementById('page-' + tabName).classList.add('active');
+      document.getElementById('tab-' + tabName).classList.add('active');
+      
+      window.scrollTo(0, 0);
+    }
+
+    function openVideo(videoId) {
+      const modal = document.getElementById('videoModal');
+      const iframe = document.getElementById('activeIframe');
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+      modal.classList.add('active');
+    }
+
+    function closeVideo() {
+      const modal = document.getElementById('videoModal');
+      const iframe = document.getElementById('activeIframe');
+      iframe.src = "";
+      modal.classList.remove('active');
+    }
+  </script>
 </body>
 </html>
