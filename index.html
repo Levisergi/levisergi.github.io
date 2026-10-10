@@ -1,440 +1,1112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Levi | High-Retention Video Editor</title>
+  <title>LEVI THE EDITOR | High-Retention Video Editing Portfolio</title>
   
-  <!-- LTE SVG FAVICON -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%23090a10' stroke='%238b5cf6' stroke-width='2.5' stroke-opacity='0.6'/><text x='32' y='41' font-family='system-ui, sans-serif' font-size='22' font-weight='900' letter-spacing='-1.5' text-anchor='middle' fill='%238b5cf6'>LTE</text></svg>">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cyber: {
+              bg: '#050811',
+              card: '#0d1322',
+              border: '#1a243a',
+              accent: '#00f0ff',
+              cyan: '#00f0ff',
+              blue: '#0072ff',
+              purple: '#7928ca',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          boxShadow: {
+            'neon-cyan': '0 0 25px rgba(0, 240, 255, 0.4)',
+            'neon-blue': '0 0 30px rgba(0, 114, 255, 0.45)',
+            'glow-card': '0 0 35px rgba(0, 240, 255, 0.12)',
+          }
+        }
+      }
+    }
+  </script>
 
+  <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
   <style>
-    :root {
-      --bg: #090a10;
-      --card-bg: rgba(255, 255, 255, 0.02);
-      --card-border: rgba(255, 255, 255, 0.07);
-      --primary: #8b5cf6;
-      --primary-hover: #7c3aed;
-      --text: #f3f4f6;
-      --text-dim: #9ca3af;
-      --green: #10b981;
+    body {
+      background-color: #050811;
+      color: #f8fafc;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    body { background-color: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
-    
-    .glow { position: fixed; width: 600px; height: 600px; background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, rgba(0,0,0,0) 70%); top: -150px; left: 50%; transform: translateX(-50%); pointer-events: none; z-index: 0; }
-
-    header { display: flex; justify-content: space-between; align-items: center; padding: 25px 8%; background: rgba(9, 10, 16, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 50; }
-    
-    /* CLICKABLE LOGO TO HOME */
-    .logo { font-size: 1.2rem; font-weight: 800; cursor: pointer; letter-spacing: -0.5px; user-select: none; }
-    .logo span { color: var(--primary); }
-    
-    /* NAV BUTTONS */
-    nav button { background: none; border: none; color: var(--text-dim); margin-left: 24px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: 0.2s ease; padding: 0; }
-    nav button:hover, nav button.active { color: var(--text); }
-
-    /* PAGE VISIBILITY LOGIC */
-    .page-content { display: none; }
-    .page-content.active { display: block; }
-
-    /* HERO */
-    .hero { text-align: center; padding: 80px 20px 40px; max-width: 900px; margin: 0 auto; }
-    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: var(--green); border-radius: 30px; font-size: 0.85rem; font-weight: 600; margin-bottom: 25px; }
-    .dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; box-shadow: 0 0 8px var(--green); }
-    h1 { font-size: 3.8rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; letter-spacing: -1.5px; }
-    h1 span { background: linear-gradient(135deg, #a78bfa, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    p.sub { color: var(--text-dim); font-size: 1.15rem; max-width: 650px; margin: 0 auto 35px; line-height: 1.6; }
-    
-    .cta-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
-    .btn { padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; transition: 0.2s ease; display: inline-block; cursor: pointer; border: none; }
-    .btn-main { background: var(--primary); color: white; box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3); }
-    .btn-main:hover { background: var(--primary-hover); transform: translateY(-2px); }
-    .btn-sub { background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text); }
-    .btn-sub:hover { border-color: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
-
-    /* LAYOUT GRIDS */
-    .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; width: 100%; }
-    .section-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 10px; }
-    .section-desc { color: var(--text-dim); margin-bottom: 40px; }
-
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 60px; }
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 60px; }
-
-    /* FEATURE CARDS */
-    .feature-card {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 35px 30px;
-      position: relative;
-      backdrop-filter: blur(12px);
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+    .glass-panel {
+      background: rgba(13, 19, 34, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 240, 255, 0.18);
     }
 
-    .feature-card::before {
-      content: '';
-      position: absolute;
-      top: -1px; left: 20px; right: 20px; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.4), transparent);
-      opacity: 0;
-      transition: opacity 0.35s ease;
+    .glass-nav {
+      background: rgba(5, 8, 17, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 240, 255, 0.15);
     }
 
-    .feature-card:hover {
-      border-color: rgba(139, 92, 246, 0.5);
-      transform: translateY(-6px);
-      box-shadow: 0 20px 40px -15px rgba(139, 92, 246, 0.2);
+    .text-gradient {
+      background: linear-gradient(135deg, #00f0ff 0%, #0072ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .feature-card:hover::before { opacity: 1; }
-
-    .feature-icon-box {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: rgba(139, 92, 246, 0.1);
-      border: 1px solid rgba(139, 92, 246, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      margin-bottom: 22px;
-      color: #a78bfa;
+    .text-gradient-fall {
+      background: linear-gradient(135deg, #ff9f43 0%, #ff5252 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .feature-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; color: var(--text); }
-    .feature-card p { color: var(--text-dim); font-size: 0.95rem; line-height: 1.6; }
-
-    /* SOFTWARE STRIP */
-    .software-strip {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 25px 30px;
-      margin-top: -20px;
-      margin-bottom: 60px;
-      text-align: center;
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
+      50% { box-shadow: 0 0 35px rgba(0, 240, 255, 0.65); }
     }
 
-    .software-strip h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); margin-bottom: 18px; }
-    .software-badges { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-    .soft-badge { padding: 8px 18px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); border-radius: 30px; font-size: 0.9rem; font-weight: 600; color: var(--text); transition: 0.25s ease; display: flex; align-items: center; gap: 8px; }
-    .soft-badge:hover { border-color: var(--primary); background: rgba(139, 92, 246, 0.1); transform: translateY(-2px); }
-
-    /* GENERAL CARDS */
-    .review-card, .pricing-card, .portfolio-card { 
-      background: var(--card-bg); 
-      border: 1px solid var(--card-border); 
-      border-radius: 16px; 
-      transition: all 0.3s ease; 
+    .glow-animation {
+      animation: pulse-glow 3s infinite ease-in-out;
     }
 
-    .review-card:hover, .pricing-card:hover, .portfolio-card:hover {
-      border-color: var(--primary);
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+    ::-webkit-scrollbar {
+      width: 8px;
     }
-
-    /* PORTFOLIO YOUTUBE CARDS */
-    .portfolio-card { overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; }
-    .video-box { width: 100%; aspect-ratio: 16/9; background: #000; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-    .video-box img { width: 100%; height: 100%; object-fit: cover; }
-    .video-play-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s ease; }
-    .video-play-overlay:hover { background: rgba(139, 92, 246, 0.3); }
-    .play-icon-circle { width: 50px; height: 50px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 1.2rem; padding-left: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-    .portfolio-info { padding: 20px; }
-    .btn-play { margin-top: 15px; width: 100%; padding: 10px; background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text); font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-    .btn-play:hover { background: var(--primary); border-color: var(--primary); }
-
-    /* YOUTUBE MODAL POPUP */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(8px); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
-    .modal.active { display: flex; }
-    .modal-content { background: var(--bg); border: 1px solid var(--card-border); border-radius: 16px; max-width: 850px; width: 100%; overflow: hidden; position: relative; box-shadow: 0 0 50px rgba(139, 92, 246, 0.2); }
-    .modal-close { position: absolute; top: 15px; right: 20px; background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer; z-index: 101; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-    .modal-video-container { width: 100%; aspect-ratio: 16/9; background: black; }
-    .modal-video-container iframe { width: 100%; height: 100%; border: none; }
-
-    /* PRICING */
-    .pricing-card { padding: 35px; text-align: center; }
-    .pricing-card.featured { border-color: var(--primary); box-shadow: 0 0 30px rgba(139, 92, 246, 0.15); }
-    .price { font-size: 2.2rem; font-weight: 800; margin: 15px 0; }
-    .price-list { list-style: none; text-align: left; margin: 20px 0; color: var(--text-dim); font-size: 0.9rem; }
-    .price-list li { margin-bottom: 10px; }
-    .price-list li::before { content: "✓ "; color: var(--primary); font-weight: bold; }
-
-    /* REVIEWS & CONTACT */
-    .review-card { padding: 25px; }
-    .review-head { display: flex; justify-content: space-between; margin-bottom: 12px; }
-    .stars { color: var(--primary); letter-spacing: 2px; }
-
-    .contact-card { background: var(--card-bg); border: 1px solid var(--primary); border-radius: 20px; padding: 50px 30px; text-align: center; box-shadow: 0 0 40px rgba(139, 92, 246, 0.15); max-width: 800px; margin: 20px auto 0; }
-
-    footer { text-align: center; padding: 30px; border-top: 1px solid var(--card-border); color: var(--text-dim); font-size: 0.85rem; }
+    ::-webkit-scrollbar-track {
+      background: #050811;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1a243a;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00f0ff;
+    }
   </style>
 </head>
-<body>
-  <div class="glow"></div>
+<body class="selection:bg-cyber-accent selection:text-black antialiased">
 
-  <header>
-    <!-- TOP LEFT LOGO - CLICK TO GO HOME -->
-    <div class="logo" onclick="switchTab('home')">LEVI <span>THE EDITOR</span></div>
-    <nav>
-      <button id="tab-home" class="active" onclick="switchTab('home')">Home</button>
-      <button id="tab-portfolio" onclick="switchTab('portfolio')">Portfolio & Rates</button>
-      <button id="tab-reviews" onclick="switchTab('reviews')">Reviews</button>
-      <button id="tab-contact" onclick="switchTab('contact')">Contact Me</button>
-    </nav>
+  <!-- Navigation Header -->
+  <header class="fixed top-0 left-0 w-full z-50 glass-nav transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo with Beanie Avatar Graphic -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="relative w-11 h-11 rounded-full p-[2px] bg-gradient-to-r from-cyber-cyan to-cyber-blue group-hover:shadow-neon-cyan transition-all duration-300">
+          <div class="w-full h-full rounded-full bg-cyber-bg overflow-hidden flex items-center justify-center p-0.5">
+            <!-- Inline SVG Beanie Guy Avatar -->
+            <svg viewBox="0 0 200 200" class="w-full h-full rounded-full bg-slate-900">
+              <circle cx="100" cy="100" r="100" fill="#121829"/>
+              <rect x="0" y="0" width="200" height="200" fill="#0d1322"/>
+              <!-- Body -->
+              <path d="M40 180 Q100 150 160 180 L170 200 L30 200 Z" fill="#222733" />
+              <!-- Neck -->
+              <rect x="85" y="120" width="30" height="30" rx="5" fill="#e8a87c"/>
+              <!-- Head -->
+              <ellipse cx="100" cy="95" rx="38" ry="42" fill="#e8a87c"/>
+              <!-- Cheeks -->
+              <ellipse cx="80" cy="105" rx="8" ry="4" fill="#ff8b8b" opacity="0.6"/>
+              <ellipse cx="120" cy="105" rx="8" ry="4" fill="#ff8b8b" opacity="0.6"/>
+              <!-- Eyes -->
+              <ellipse cx="82" cy="92" rx="7" ry="10" fill="#2b1a10"/>
+              <ellipse cx="118" cy="92" rx="7" ry="10" fill="#2b1a10"/>
+              <circle cx="84" cy="89" r="2.5" fill="#ffffff"/>
+              <circle cx="120" cy="89" r="2.5" fill="#ffffff"/>
+              <!-- Mouth -->
+              <line x1="92" y1="116" x2="108" y2="116" stroke="#2b1a10" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Beanie Hat -->
+              <path d="M58 85 C58 45, 142 45, 142 85 Z" fill="#2a2e3a"/>
+              <rect x="52" y="75" width="96" height="18" rx="8" fill="#1f232d" stroke="#00f0ff" stroke-width="1.5"/>
+              <!-- Hand thinking posture -->
+              <path d="M75 140 Q90 125 100 120" stroke="#e8a87c" stroke-width="8" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-extrabold text-lg sm:text-xl tracking-wider text-white group-hover:text-cyber-cyan transition-colors">
+            LEVI <span class="text-cyber-cyan">THE EDITOR</span>
+          </span>
+          <span class="text-[10px] tracking-widest text-slate-400 uppercase font-semibold">25M+ Views Specialist</span>
+        </div>
+      </a>
+
+      <!-- Desktop Links -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <a href="#overview" class="text-slate-300 hover:text-cyber-cyan transition-colors">Overview</a>
+        <a href="#works" class="text-slate-300 hover:text-cyber-cyan transition-colors">Works Showcase</a>
+        <a href="#rates" class="text-slate-300 hover:text-cyber-cyan transition-colors flex items-center gap-1.5">
+          <span>Rates & Pricing</span>
+          <span class="px-2 py-0.5 text-[10px] bg-amber-500/20 text-amber-400 font-bold rounded-full border border-amber-500/40">30% OFF</span>
+        </a>
+        <a href="#reviews" class="text-slate-300 hover:text-cyber-cyan transition-colors">Reviews</a>
+        <a href="#contact" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyber-cyan to-cyber-blue text-slate-950 font-bold hover:shadow-neon-cyan transition-all hover:scale-105 active:scale-95">
+          Hire Me
+        </a>
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white focus:outline-none p-2" aria-label="Toggle menu">
+        <i class="ph ph-list text-2xl" id="menu-icon"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-cyber-border px-6 py-6 space-y-4">
+      <a href="#overview" class="mobile-nav-link block text-lg font-medium text-slate-200 hover:text-cyber-cyan">Overview</a>
+      <a href="#works" class="mobile-nav-link block text-lg font-medium text-slate-200 hover:text-cyber-cyan">Works Showcase</a>
+      <a href="#rates" class="mobile-nav-link flex items-center justify-between text-lg font-medium text-slate-200 hover:text-cyber-cyan">
+        <span>Rates & Pricing</span>
+        <span class="px-2.5 py-0.5 text-xs bg-amber-500/20 text-amber-400 font-bold rounded-full border border-amber-500/40">30% OFF</span>
+      </a>
+      <a href="#reviews" class="mobile-nav-link block text-lg font-medium text-slate-200 hover:text-cyber-cyan">Reviews</a>
+      <a href="#contact" class="mobile-nav-link block w-full text-center px-5 py-3 rounded-xl bg-gradient-to-r from-cyber-cyan to-cyber-blue text-slate-950 font-bold shadow-neon-cyan">
+        Hire Me
+      </a>
+    </div>
   </header>
 
-  <main>
-    <!-- PAGE 1: HOME -->
-    <div id="page-home" class="page-content active">
-      <section class="hero">
-        <div class="badge"><span class="dot"></span> Ready to start immediately</div>
-        <h1>High-Retention Edits Built To <span>Hook Viewers</span></h1>
-        <p class="sub">Specializing in fast-paced storytelling, viral short-form pacing, and high-CTR visual hooks designed to scale creators and brands.</p>
+  <!-- Hero Section -->
+  <section id="overview" class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+    <!-- Glow Elements -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyber-cyan/10 rounded-full blur-[130px] pointer-events-none"></div>
+    <div class="absolute top-1/3 right-10 w-[350px] h-[350px] bg-cyber-blue/15 rounded-full blur-[110px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         
-        <!-- BUTTON GROUP WITH VIEW PAST WORKS -->
-        <div class="cta-group">
-          <button onclick="switchTab('portfolio')" class="btn btn-main">View Portfolio</button>
-          <button onclick="switchTab('portfolio')" class="btn btn-sub">View Past Works</button>
-          <button onclick="switchTab('contact')" class="btn btn-sub">Contact Me</button>
+        <!-- Text Column -->
+        <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+          
+          <!-- Views Badge -->
+          <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-panel border border-cyber-cyan/40 text-cyber-cyan text-xs sm:text-sm font-bold shadow-neon-cyan">
+            <i class="ph ph-lightning text-amber-400 text-base"></i>
+            <span>25M+ Total Views Across Content Edits</span>
+          </div>
+
+          <!-- Headline -->
+          <div class="space-y-4">
+            <h1 class="text-4xl sm:text-6xl xl:text-7xl font-black tracking-tight leading-none text-white">
+              HIGH-RETENTION EDITS <br/>
+              <span class="text-gradient">BUILT TO HOOK</span> <br/>
+              VIEWERS
+            </h1>
+            <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+              Transforming raw footage into viral hits with frame-by-frame zoom cuts, custom motion graphics, sound design, and retention-focused storytelling.
+            </p>
+          </div>
+
+          <!-- Quick Stats Bar -->
+          <div class="grid grid-cols-3 gap-4 pt-2 max-w-lg mx-auto lg:mx-0">
+            <div class="glass-panel p-4 rounded-2xl border border-cyber-border text-center lg:text-left">
+              <div class="text-2xl sm:text-3xl font-extrabold text-cyber-cyan">25M+</div>
+              <div class="text-xs text-slate-400 font-medium">Total Views</div>
+            </div>
+            <div class="glass-panel p-4 rounded-2xl border border-cyber-border text-center lg:text-left">
+              <div class="text-2xl sm:text-3xl font-extrabold text-cyber-cyan">3+ Yrs</div>
+              <div class="text-xs text-slate-400 font-medium">Editing Exp.</div>
+            </div>
+            <div class="glass-panel p-4 rounded-2xl border border-cyber-border text-center lg:text-left">
+              <div class="text-2xl sm:text-3xl font-extrabold text-cyber-cyan">0%</div>
+              <div class="text-xs text-slate-400 font-medium">Friction Workflow</div>
+            </div>
+          </div>
+
+          <!-- CTAs -->
+          <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+            <a href="#works" class="px-8 py-4 rounded-xl bg-gradient-to-r from-cyber-cyan to-cyber-blue text-slate-950 font-extrabold text-center shadow-neon-cyan hover:scale-105 transition-all">
+              <i class="ph ph-play-circle text-lg inline-block mr-2 align-sub"></i>
+              View Featured Edits
+            </a>
+            <a href="#rates" class="px-8 py-4 rounded-xl glass-panel text-white font-bold border border-cyber-cyan/30 text-center hover:bg-cyber-cyan/10 hover:border-cyber-cyan transition-all">
+              <i class="ph ph-calculator text-lg inline-block mr-2 align-sub"></i>
+              Calculate Quote
+            </a>
+          </div>
+
         </div>
-      </section>
 
-      <section class="container">
-        <div class="grid-3">
-          <div class="feature-card">
-            <div class="feature-icon-box">⚡</div>
-            <h3>Algorithm Pacing</h3>
-            <p>3+ years mastering frame-by-frame audience retention. I eliminate dead air and build momentum so viewers don't swipe away.</p>
-          </div>
+        <!-- Avatar Hero Card -->
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="relative w-72 h-80 sm:w-80 sm:h-96 md:w-96 md:h-[420px]">
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-tr from-cyber-cyan via-cyber-blue to-purple-600 opacity-40 blur-2xl animate-pulse"></div>
+            
+            <div class="relative w-full h-full rounded-3xl p-1 bg-gradient-to-b from-cyber-cyan to-cyber-blue shadow-neon-blue glass-panel overflow-hidden flex flex-col justify-between p-6">
+              
+              <!-- Avatar Spotlight Container -->
+              <div class="w-full h-full bg-cyber-bg rounded-2xl flex flex-col items-center justify-center relative overflow-hidden border border-cyber-border p-4">
+                
+                <div class="absolute inset-0 bg-[radial-gradient(#00f0ff_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
 
-          <div class="feature-card">
-            <div class="feature-icon-box">🎬</div>
-            <h3>Pro Post-Production</h3>
-            <p>Leveraging DaVinci Resolve, CapCut Pro, and Canva pipelines for precise color grading, motion graphics, zoom mapping, and sound design.</p>
-          </div>
+                <!-- Avatar Artwork Render -->
+                <div class="relative z-10 flex flex-col items-center">
+                  <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-2 border-cyber-cyan shadow-neon-cyan overflow-hidden mb-4 bg-slate-900 p-1">
+                    <svg viewBox="0 0 200 200" class="w-full h-full rounded-full">
+                      <rect x="0" y="0" width="200" height="200" fill="#0d1322"/>
+                      <path d="M30 190 Q100 145 170 190 L180 200 L20 200 Z" fill="#222733" />
+                      <rect x="85" y="115" width="30" height="30" rx="5" fill="#e8a87c"/>
+                      <ellipse cx="100" cy="90" rx="40" ry="44" fill="#e8a87c"/>
+                      <ellipse cx="78" cy="100" rx="8" ry="4" fill="#ff8b8b" opacity="0.6"/>
+                      <ellipse cx="122" cy="100" rx="8" ry="4" fill="#ff8b8b" opacity="0.6"/>
+                      <ellipse cx="80" cy="88" rx="7" ry="10" fill="#2b1a10"/>
+                      <ellipse cx="120" cy="88" rx="7" ry="10" fill="#2b1a10"/>
+                      <circle cx="82" cy="85" r="2.5" fill="#ffffff"/>
+                      <circle cx="122" cy="85" r="2.5" fill="#ffffff"/>
+                      <line x1="90" y1="112" x2="110" y2="112" stroke="#2b1a10" stroke-width="2.5" stroke-linecap="round"/>
+                      <path d="M54 80 C54 38, 146 38, 146 80 Z" fill="#2a2e3a"/>
+                      <rect x="48" y="70" width="104" height="20" rx="8" fill="#1f232d" stroke="#00f0ff" stroke-width="1.5"/>
+                    </svg>
+                  </div>
 
-          <div class="feature-card">
-            <div class="feature-icon-box">🤝</div>
-            <h3>0% Friction Workflow</h3>
-            <p>Lightning-fast turnaround times, clear communication over Discord, and endless revisions until your video hits perfectly.</p>
+                  <h3 class="text-2xl font-black text-white tracking-wide">LEVI THE EDITOR</h3>
+                  <p class="text-xs text-cyber-cyan font-mono uppercase tracking-widest mt-1">Short-Form & Long-Form Specialist</p>
+                </div>
+
+                <!-- Status Badge -->
+                <div class="mt-4 w-full glass-panel py-2 px-3 rounded-xl border border-emerald-500/30 flex items-center justify-between text-xs">
+                  <span class="flex items-center gap-2 text-emerald-400 font-semibold">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    Ready to start immediately
+                  </span>
+                  <span class="text-slate-400 text-[10px]">Active</span>
+                </div>
+
+              </div>
+
+            </div>
           </div>
         </div>
 
-        <!-- SOFTWARE & EDITING TOOLS STRIP -->
-        <div class="software-strip">
-          <h4>Editing Software & Production Stack</h4>
-          <div class="software-badges">
-            <span class="soft-badge">🎨 DaVinci Resolve</span>
-            <span class="soft-badge">✂️ CapCut Pro</span>
-            <span class="soft-badge">🖼️ Canva</span>
-            <span class="soft-badge">🎧 Custom Sound Design</span>
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
+  </section>
 
-    <!-- PAGE 2: PORTFOLIO & PRICING -->
-    <div id="page-portfolio" class="page-content">
-      <div class="container">
-        <h2 class="section-title">FEATURED EDITS</h2>
-        <p class="section-desc">Sample video edits optimized for retention and audience engagement.</p>
+  <!-- Works Showcase Section -->
+  <section id="works" class="py-24 relative bg-cyber-bg border-t border-cyber-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <div>
+          <span class="text-cyber-cyan font-mono text-xs tracking-widest uppercase font-semibold">Curated Work Portfolio</span>
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-white mt-1">FEATURED EDITS</h2>
+        </div>
         
-        <div class="grid-2">
-          <!-- Short 1 -->
-          <div class="portfolio-card">
-            <div class="video-box" onclick="openVideo('j3BUKhtCv7s')">
-              <img src="https://img.youtube.com/vi/j3BUKhtCv7s/hqdefault.jpg" alt="Speed Body Guard Edit">
-              <div class="video-play-overlay">
-                <div class="play-icon-circle">▶</div>
+        <!-- Category Filter Tabs -->
+        <div class="flex flex-wrap gap-2 glass-panel p-1.5 rounded-xl border border-cyber-border self-start md:self-auto">
+          <button data-filter="all" class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all bg-cyber-cyan text-slate-950 shadow-neon-cyan">
+            All Works (5)
+          </button>
+          <button data-filter="short" class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-400 hover:text-white transition-all">
+            Short-Form (4)
+          </button>
+          <button data-filter="long" class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-400 hover:text-white transition-all">
+            Long-Form (1)
+          </button>
+        </div>
+      </div>
+
+      <!-- Works Grid -->
+      <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <!-- LONG-FORM VIDEO (1 Video Only) -->
+        <!-- Project: GTA 5 vs GTA 6 by Glooby -->
+        <div class="project-card group glass-panel rounded-2xl overflow-hidden border border-cyber-border hover:border-cyber-cyan transition-all duration-300 hover:-translate-y-1.5" data-category="long">
+          <div class="relative aspect-video bg-slate-900 overflow-hidden cursor-pointer" onclick="openVideoModal('g-rSSntLJ7k', '10 THINGS From GTA 5 That You WON\'T Be Able To Do In GTA 6')">
+            <img src="https://img.youtube.com/vi/g-rSSntLJ7k/hqdefault.jpg" alt="GTA 5 vs GTA 6 Thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/0d1322/00f0ff?text=GTA+5+vs+GTA+6'">
+            <div class="absolute inset-0 bg-gradient-to-t from-cyber-bg via-transparent to-transparent opacity-80"></div>
+            
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-14 h-14 rounded-full bg-cyber-cyan/90 text-slate-950 flex items-center justify-center text-2xl shadow-neon-cyan group-hover:scale-110 transition-transform">
+                <i class="ph ph-play-fill ml-0.5"></i>
               </div>
             </div>
-            <div class="portfolio-info">
-              <h4>Speed Body Guard</h4>
-              <p style="color: var(--text-dim); font-size:0.85rem;">Fast-paced viral YouTube Short edit featuring custom text tracking and dynamic zoom hooks.</p>
-              <button class="btn-play" onclick="openVideo('j3BUKhtCv7s')">▶ Watch Full Video</button>
+
+            <div class="absolute top-3 right-3 px-3 py-1 rounded-full bg-cyber-bg/80 backdrop-blur-md border border-cyber-cyan/30 text-cyber-cyan text-xs font-bold flex items-center gap-1">
+              <i class="ph ph-eye"></i> 590K+ Views
+            </div>
+
+            <div class="absolute bottom-3 left-3 px-2.5 py-0.5 rounded-md bg-blue-500/20 text-blue-400 text-[10px] font-bold border border-blue-500/30">
+              Long-Form Video
             </div>
           </div>
 
-          <!-- Short 2 -->
-          <div class="portfolio-card">
-            <div class="video-box" onclick="openVideo('pH2pnMzyC6M')">
-              <img src="https://img.youtube.com/vi/pH2pnMzyC6M/hqdefault.jpg" alt="Wemmbu Montage Edit">
-              <div class="video-play-overlay">
-                <div class="play-icon-circle">▶</div>
-              </div>
+          <div class="p-5 space-y-3">
+            <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
+              <span>Channel: <strong class="text-white">Glooby</strong></span>
+              <span class="text-cyber-cyan flex items-center gap-1"><i class="ph ph-thumbs-up"></i> 5.4K+ Likes</span>
             </div>
-            <div class="portfolio-info">
-              <h4>Wemmbu Montage</h4>
-              <p style="color: var(--text-dim); font-size:0.85rem;">High-energy gaming montage edit with intense sound design, SFX timing, and glow effects.</p>
-              <button class="btn-play" onclick="openVideo('pH2pnMzyC6M')">▶ Watch Full Video</button>
-            </div>
-          </div>
-
-          <!-- Short 3 -->
-          <div class="portfolio-card">
-            <div class="video-box" onclick="openVideo('7WD9AvjX0Jw')">
-              <img src="https://img.youtube.com/vi/7WD9AvjX0Jw/hqdefault.jpg" alt="Ranking Swim Fails">
-              <div class="video-play-overlay">
-                <div class="play-icon-circle">▶</div>
-              </div>
-            </div>
-            <div class="portfolio-info">
-              <h4>Ranking Swim Fails</h4>
-              <p style="color: var(--text-dim); font-size:0.85rem;">This show how I can also make ranking videos and keep them quick and generate much of views.</p>
-              <button class="btn-play" onclick="openVideo('7WD9AvjX0Jw')">▶ Watch Full Video</button>
-            </div>
-          </div>
-
-          <!-- Video 4 -->
-          <div class="portfolio-card">
-            <div class="video-box" onclick="openVideo('voqu001Ctlg')">
-              <img src="https://img.youtube.com/vi/voqu001Ctlg/hqdefault.jpg" alt="Apex Editing Showcase">
-              <div class="video-play-overlay">
-                <div class="play-icon-circle">▶</div>
-              </div>
-            </div>
-            <div class="portfolio-info">
-              <h4>Apex Editing Showcase</h4>
-              <p style="color: var(--text-dim); font-size:0.85rem;">Comprehensive editing showcase demonstrating long-form story pacing and audio leveling.</p>
-              <button class="btn-play" onclick="openVideo('voqu001Ctlg')">▶ Watch Full Video</button>
+            <h3 class="text-lg font-bold text-white group-hover:text-cyber-cyan transition-colors line-clamp-1">
+              10 THINGS From GTA 5 That You WON'T Be Able To Do In GTA 6
+            </h3>
+            <p class="text-xs text-slate-400 line-clamp-2">
+              Deep documentary narrative gaming edit with dynamic side-by-side comparison graphics, color correction, and retention pacing.
+            </p>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-800/80 text-xs">
+              <span class="text-slate-400 flex items-center gap-1"><i class="ph ph-film-strip"></i> Long-Form Showcase</span>
+              <button onclick="openVideoModal('g-rSSntLJ7k', '10 THINGS From GTA 5 That You WON\'T Be Able To Do In GTA 6')" class="text-cyber-cyan hover:underline font-bold flex items-center gap-1">
+                Watch Edit <i class="ph ph-arrow-right"></i>
+              </button>
             </div>
           </div>
         </div>
 
-        <h2 class="section-title">RATES & PRICING</h2>
-        <p class="section-desc">Flexible packages tailored to your content schedule.</p>
+        <!-- SHORT-FORM VIDEOS (4 Videos) -->
 
-        <div class="grid-3">
-          <div class="pricing-card">
-            <h3>Short-Form Pack</h3>
-            <div class="price">Custom</div>
-            <ul class="price-list">
-              <li>Up to 60s runtime</li>
-              <li>Fast-paced subtitles & tracking</li>
-              <li>Full sound design & SFX</li>
-              <li>24–48hr turnaround</li>
-            </ul>
-            <button onclick="switchTab('contact')" class="btn btn-sub" style="width:100%;">Get Quote</button>
+        <!-- Short 1: Wemmbu by Nozium -->
+        <div class="project-card group glass-panel rounded-2xl overflow-hidden border border-cyber-border hover:border-cyber-cyan transition-all duration-300 hover:-translate-y-1.5" data-category="short">
+          <div class="relative aspect-video bg-slate-900 overflow-hidden cursor-pointer" onclick="openVideoModal('K37bVMzK-Wk', 'Wemmbu Entered Like a Final Boss..🗿')">
+            <img src="https://img.youtube.com/vi/K37bVMzK-Wk/hqdefault.jpg" alt="Wemmbu Video Thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/0d1322/00f0ff?text=Wemmbu+Edit'">
+            <div class="absolute inset-0 bg-gradient-to-t from-cyber-bg via-transparent to-transparent opacity-80"></div>
+            
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-14 h-14 rounded-full bg-cyber-cyan/90 text-slate-950 flex items-center justify-center text-2xl shadow-neon-cyan group-hover:scale-110 transition-transform">
+                <i class="ph ph-play-fill ml-0.5"></i>
+              </div>
+            </div>
+
+            <div class="absolute top-3 right-3 px-3 py-1 rounded-full bg-cyber-bg/80 backdrop-blur-md border border-cyber-cyan/30 text-cyber-cyan text-xs font-bold flex items-center gap-1">
+              <i class="ph ph-fire text-amber-400"></i> 4.1M+ Views
+            </div>
+
+            <div class="absolute bottom-3 left-3 px-2.5 py-0.5 rounded-md bg-amber-500/20 text-amber-400 text-[10px] font-bold border border-amber-500/30">
+              Short-Form Edit
+            </div>
           </div>
 
-          <div class="pricing-card featured">
-            <h3>Long-Form Video</h3>
-            <div class="price">Custom</div>
-            <ul class="price-list">
-              <li>DaVinci Resolve narrative pacing</li>
-              <li>Color correction & audio leveling</li>
-              <li>Custom graphics & zoom effects</li>
-              <li>Unlimited revisions</li>
-            </ul>
-            <button onclick="switchTab('contact')" class="btn btn-main" style="width:100%;">Get Quote</button>
-          </div>
-
-          <div class="pricing-card">
-            <h3>Monthly Retainer</h3>
-            <div class="price">Custom</div>
-            <ul class="price-list">
-              <li>Priority editing queue</li>
-              <li>Bulk edit discounts</li>
-              <li>Direct line on Discord</li>
-              <li>Consistent branding</li>
-            </ul>
-            <button onclick="switchTab('contact')" class="btn btn-sub" style="width:100%;">Get Quote</button>
+          <div class="p-5 space-y-3">
+            <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
+              <span>Channel: <strong class="text-white">Nozium</strong></span>
+              <span class="text-cyber-cyan flex items-center gap-1"><i class="ph ph-thumbs-up"></i> 47K+ Likes</span>
+            </div>
+            <h3 class="text-lg font-bold text-white group-hover:text-cyber-cyan transition-colors line-clamp-1">
+              Wemmbu Entered Like a Final Boss..🗿
+            </h3>
+            <p class="text-xs text-slate-400 line-clamp-2">
+              Viral Minecraft short edit packed with frame-by-frame text tracking, heavy bass audio cues, and instant hook retention.
+            </p>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-800/80 text-xs">
+              <span class="text-slate-400 flex items-center gap-1"><i class="ph ph-lightning"></i> 4.1M Views Hit</span>
+              <button onclick="openVideoModal('K37bVMzK-Wk', 'Wemmbu Entered Like a Final Boss..🗿')" class="text-cyber-cyan hover:underline font-bold flex items-center gap-1">
+                Watch Edit <i class="ph ph-arrow-right"></i>
+              </button>
+            </div>
           </div>
         </div>
+
+        <!-- Short 2: Gangster Ahh Crab by INCIDENT TV -->
+        <div class="project-card group glass-panel rounded-2xl overflow-hidden border border-cyber-border hover:border-cyber-cyan transition-all duration-300 hover:-translate-y-1.5" data-category="short">
+          <div class="relative aspect-video bg-slate-900 overflow-hidden cursor-pointer" onclick="openVideoModal('74ZT3wiFK1k', 'Gangster Ahh Crab! 😭🤞')">
+            <img src="https://img.youtube.com/vi/74ZT3wiFK1k/hqdefault.jpg" alt="Gangster Crab Thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/0d1322/00f0ff?text=Gangster+Crab'">
+            <div class="absolute inset-0 bg-gradient-to-t from-cyber-bg via-transparent to-transparent opacity-80"></div>
+            
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-14 h-14 rounded-full bg-cyber-cyan/90 text-slate-950 flex items-center justify-center text-2xl shadow-neon-cyan group-hover:scale-110 transition-transform">
+                <i class="ph ph-play-fill ml-0.5"></i>
+              </div>
+            </div>
+
+            <div class="absolute top-3 right-3 px-3 py-1 rounded-full bg-cyber-bg/80 backdrop-blur-md border border-cyber-cyan/30 text-cyber-cyan text-xs font-bold flex items-center gap-1">
+              <i class="ph ph-fire text-amber-400"></i> 22.1M+ Views
+            </div>
+
+            <div class="absolute bottom-3 left-3 px-2.5 py-0.5 rounded-md bg-amber-500/20 text-amber-400 text-[10px] font-bold border border-amber-500/30">
+              Short-Form Viral
+            </div>
+          </div>
+
+          <div class="p-5 space-y-3">
+            <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
+              <span>Channel: <strong class="text-white">INCIDENT TV</strong></span>
+              <span class="text-cyber-cyan flex items-center gap-1"><i class="ph ph-thumbs-up"></i> 183K+ Likes</span>
+            </div>
+            <h3 class="text-lg font-bold text-white group-hover:text-cyber-cyan transition-colors line-clamp-1">
+              Gangster Ahh Crab! 😭🤞
+            </h3>
+            <p class="text-xs text-slate-400 line-clamp-2">
+              Mega-viral short video edit featuring humor timing, speed ramps, customized meme overlays, and massive engagement.
+            </p>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-800/80 text-xs">
+              <span class="text-slate-400 flex items-center gap-1"><i class="ph ph-sparkle text-cyber-cyan"></i> 22.1M Record</span>
+              <button onclick="openVideoModal('74ZT3wiFK1k', 'Gangster Ahh Crab! 😭🤞')" class="text-cyber-cyan hover:underline font-bold flex items-center gap-1">
+                Watch Edit <i class="ph ph-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Short 3: Harvesting Wheat Farm by Voltrox -->
+        <div class="project-card group glass-panel rounded-2xl overflow-hidden border border-cyber-border hover:border-cyber-cyan transition-all duration-300 hover:-translate-y-1.5" data-category="short">
+          <div class="relative aspect-video bg-slate-900 overflow-hidden cursor-pointer" onclick="openVideoModal('qsmhebpoBec', 'Harvesting the BIGGEST Wheat Farm in Minecraft')">
+            <img src="https://img.youtube.com/vi/qsmhebpoBec/hqdefault.jpg" alt="Minecraft Wheat Farm Thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/0d1322/00f0ff?text=Wheat+Farm'">
+            <div class="absolute inset-0 bg-gradient-to-t from-cyber-bg via-transparent to-transparent opacity-80"></div>
+            
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-14 h-14 rounded-full bg-cyber-cyan/90 text-slate-950 flex items-center justify-center text-2xl shadow-neon-cyan group-hover:scale-110 transition-transform">
+                <i class="ph ph-play-fill ml-0.5"></i>
+              </div>
+            </div>
+
+            <div class="absolute top-3 right-3 px-3 py-1 rounded-full bg-cyber-bg/80 backdrop-blur-md border border-cyber-cyan/30 text-cyber-cyan text-xs font-bold flex items-center gap-1">
+              <i class="ph ph-eye"></i> 238K+ Views
+            </div>
+
+            <div class="absolute bottom-3 left-3 px-2.5 py-0.5 rounded-md bg-amber-500/20 text-amber-400 text-[10px] font-bold border border-amber-500/30">
+              Short-Form Edit
+            </div>
+          </div>
+
+          <div class="p-5 space-y-3">
+            <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
+              <span>Channel: <strong class="text-white">Voltrox</strong></span>
+              <span class="text-cyber-cyan flex items-center gap-1"><i class="ph ph-thumbs-up"></i> 4.5K+ Likes</span>
+            </div>
+            <h3 class="text-lg font-bold text-white group-hover:text-cyber-cyan transition-colors line-clamp-1">
+              Harvesting the BIGGEST Wheat Farm in Minecraft
+            </h3>
+            <p class="text-xs text-slate-400 line-clamp-2">
+              Satisfying short-form gaming clip edit with clean sound design, seamless loop cuts, and crisp color enhancement.
+            </p>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-800/80 text-xs">
+              <span class="text-slate-400 flex items-center gap-1"><i class="ph ph-game-controller"></i> Gaming Short</span>
+              <button onclick="openVideoModal('qsmhebpoBec', 'Harvesting the BIGGEST Wheat Farm in Minecraft')" class="text-cyber-cyan hover:underline font-bold flex items-center gap-1">
+                Watch Edit <i class="ph ph-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Short 4: Ranking Best Pool Fails by TOP 6 -->
+        <div class="project-card group glass-panel rounded-2xl overflow-hidden border border-cyber-border hover:border-cyber-cyan transition-all duration-300 hover:-translate-y-1.5" data-category="short">
+          <div class="relative aspect-video bg-slate-900 overflow-hidden cursor-pointer" onclick="openVideoModal('7WD9AvjX0Jw', 'Ranking Best Pool Fails')">
+            <img src="https://img.youtube.com/vi/7WD9AvjX0Jw/hqdefault.jpg" alt="Pool Fails Thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/0d1322/00f0ff?text=Pool+Fails'">
+            <div class="absolute inset-0 bg-gradient-to-t from-cyber-bg via-transparent to-transparent opacity-80"></div>
+            
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-14 h-14 rounded-full bg-cyber-cyan/90 text-slate-950 flex items-center justify-center text-2xl shadow-neon-cyan group-hover:scale-110 transition-transform">
+                <i class="ph ph-play-fill ml-0.5"></i>
+              </div>
+            </div>
+
+            <div class="absolute top-3 right-3 px-3 py-1 rounded-full bg-cyber-bg/80 backdrop-blur-md border border-cyber-cyan/30 text-cyber-cyan text-xs font-bold flex items-center gap-1">
+              <i class="ph ph-star text-amber-400"></i> Viral Edit
+            </div>
+
+            <div class="absolute bottom-3 left-3 px-2.5 py-0.5 rounded-md bg-amber-500/20 text-amber-400 text-[10px] font-bold border border-amber-500/30">
+              Short-Form Edit
+            </div>
+          </div>
+
+          <div class="p-5 space-y-3">
+            <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
+              <span>Channel: <strong class="text-white">TOP 6</strong></span>
+              <span class="text-cyber-cyan flex items-center gap-1"><i class="ph ph-fire"></i> High Retention</span>
+            </div>
+            <h3 class="text-lg font-bold text-white group-hover:text-cyber-cyan transition-colors line-clamp-1">
+              Ranking Best Pool Fails
+            </h3>
+            <p class="text-xs text-slate-400 line-clamp-2">
+              High-energy short list compilation featuring quick-cut commentary, zoom effects, and soundboard overlays.
+            </p>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-800/80 text-xs">
+              <span class="text-slate-400 flex items-center gap-1"><i class="ph ph-list-numbers"></i> List Short</span>
+              <button onclick="openVideoModal('7WD9AvjX0Jw', 'Ranking Best Pool Fails')" class="text-cyber-cyan hover:underline font-bold flex items-center gap-1">
+                Watch Edit <i class="ph ph-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
+  </section>
 
-    <!-- PAGE 3: REVIEWS ONLY -->
-    <div id="page-reviews" class="page-content">
-      <div class="container">
-        <h2 class="section-title">CLIENT REVIEWS</h2>
-        <p class="section-desc">Feedback from creators and brands I've collaborated with.</p>
+  <!-- Rates & Pricing Section -->
+  <section id="rates" class="py-24 relative overflow-hidden bg-cyber-bg/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <!-- Fall Season Discount Banner -->
+      <div class="mb-16 glass-panel rounded-2xl p-6 sm:p-8 border-2 border-amber-500/50 bg-gradient-to-r from-amber-950/30 via-cyber-card to-amber-950/30 shadow-2xl relative overflow-hidden group">
+        <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+          <div class="flex flex-col sm:flex-row items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-3xl text-amber-400 shrink-0">
+              🍁
+            </div>
+            <div>
+              <div class="inline-block px-3 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold text-xs uppercase tracking-wider mb-1">
+                Active Promo
+              </div>
+              <h3 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                FALL SEASON DISCOUNT — <span class="text-gradient-fall">30% OFF ALL PACKAGES!</span>
+              </h3>
+              <p class="text-slate-300 text-xs sm:text-sm mt-1">
+                All rate cards and quotes reflect a 30% discount. Lock in your rate for ongoing edits now.
+              </p>
+            </div>
+          </div>
 
-        <div class="grid-2">
-          <div class="review-card">
-            <div class="review-head"><strong>Sarah Jenkins</strong><span class="stars">★★★★★</span></div>
-            <p style="color: var(--text-dim); font-style: italic;">"The editor brought my vlog to life, great work on the pacing and colors!"</p>
-          </div>
-          <div class="review-card">
-            <div class="review-head"><strong>Mike T.</strong><span class="stars">★★★★★</span></div>
-            <p style="color: var(--text-dim); font-style: italic;">"Amazing edits on our wedding video. Understood exactly what we wanted."</p>
-          </div>
-          <div class="review-card">
-            <div class="review-head"><strong>Ben Carter</strong><span class="stars">★★★★★</span></div>
-            <p style="color: var(--text-dim); font-style: italic;">"Super professional editor, they took my raw footage and made a masterpiece."</p>
-          </div>
-          <div class="review-card">
-            <div class="review-head"><strong>Daniel Kim</strong><span class="stars">★★★★★</span></div>
-            <p style="color: var(--text-dim); font-style: italic;">"Excellent editing, the narrative flow is so much better now."</p>
-          </div>
+          <a href="#calculator" class="w-full sm:w-auto text-center px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black hover:scale-105 transition-all shadow-lg shrink-0">
+            CALCULATE QUOTE
+          </a>
         </div>
       </div>
-    </div>
 
-    <!-- PAGE 4: CONTACT ONLY -->
-    <div id="page-contact" class="page-content">
-      <div class="container">
-        <div class="contact-card">
-          <h2>LET'S SCALE YOUR CHANNEL</h2>
-          <p style="color: var(--text-dim); margin: 10px 0 25px;">Drop a message with details about your next project, and let's get to work.</p>
-          <div class="cta-group">
-            <a href="mailto:levisergi23@gmail.com" class="btn btn-main">EMAIL levisergi23@gmail.com</a>
-            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="btn btn-sub">DISCORD levisergi</a>
+      <!-- Pricing Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <span class="text-cyber-cyan font-mono text-xs tracking-widest uppercase font-semibold">Pricing Tiers</span>
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-white">EDITING PACKAGES</h2>
+        <p class="text-slate-400 text-sm">Transparent pricing options tailored for creators looking for consistent quality.</p>
+      </div>
+
+      <!-- Pricing Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+        
+        <!-- Tier 1: Short-Form Pack ($15) -->
+        <div class="glass-panel p-8 rounded-3xl border border-cyber-border hover:border-cyber-cyan/50 transition-all flex flex-col justify-between relative group">
+          <div class="space-y-6">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="px-3 py-1 rounded-full bg-cyber-cyan/10 text-cyber-cyan text-xs font-bold uppercase border border-cyber-cyan/20">Shorts / TikTok</span>
+                <h3 class="text-2xl font-bold text-white mt-3">Short-Form Pack</h3>
+              </div>
+              <span class="text-xs bg-amber-500/20 text-amber-400 font-bold px-2.5 py-1 rounded-md border border-amber-500/30">30% OFF</span>
+            </div>
+
+            <div class="space-y-1">
+              <div class="flex items-baseline gap-2">
+                <span class="text-4xl sm:text-5xl font-black text-white">$15</span>
+                <span class="text-slate-400 text-sm">/ edit</span>
+                <span class="text-slate-500 line-through text-sm font-semibold ml-2">$50</span>
+              </div>
+              <p class="text-xs text-cyber-cyan">Save $35 on viral Short-Form edits</p>
+            </div>
+
+            <ul class="space-y-3 text-xs sm:text-sm text-slate-300 border-t border-slate-800 pt-6">
+              <li class="flex items-center gap-2.5"><i class="ph ph-check-circle text-cyber-cyan text-base"></i> Up to 60 seconds runtime</li>
+              <li class="flex items-center gap-2.5"><i class="ph ph-check-circle text-cyber-cyan text-base"></i> Fast-paced motion subtitles</li>
+              <li class="flex items-center gap-2.5"><i class="ph ph-check-circle text-cyber-cyan text-base"></i> Custom SFX & sound design</li>
+              <li class="flex items-center gap-2.5"><i class="ph ph-check-circle text-cyber-cyan text-base"></i> Dynamic zooms & kinetic text</li>
+              <li class="flex items-center gap-2.5"><i class="ph ph-check-circle text-cyber-cyan text-base"></i> 24-48 Hour Turnaround</li>
+            </ul>
           </div>
+
+          <a href="#contact" class="mt-8 block w-full py-3.5 rounded-xl bg-slate-800 text-white font-bold text-center hover:bg-cyber-cyan hover:text-slate-950 transition-all text-sm">
+            Select $15 Short Pack
+          </a>
+        </div>
+
+        <!-- Tier 2: Long-Form Video ($105) -->
+        <div class="glass-panel p-8 rounded-3xl border-2 border-cyber-cyan bg-cyber-card transition-all flex flex-col justify-between relative shadow-neon-blue group scale-105">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-cyber-cyan to-cyber-blue text-slate-950 font-black text-xs uppercase tracking-wider shadow-md">
+            Most Popular
+          </div>
+
+          <div class="space-y-6">
+            <div class="flex justify-between items-start mt-2">
+              <div>
+                <span class="px-3 py-1 rounded-full bg-cyber-blue/20 text-cyber-cyan text-xs font-bold uppercase border border-cyber-cyan/30">YouTube Video</span>
+                <h3 class="text-2xl font-bold text-white mt-3">Long-Form Video</h3>
+              </div>
+              <span class="text-xs bg-amber-500/20 text-amber-400 font-bold px-2.5 py-1 rounded-md border border-amber-500/30">30% OFF</span>
+            </div>
+
+            <div class="space-y-1">
+              <div class="flex items-baseline gap-2">
+                <span class="text-4xl sm:text-5xl font-black text-white">$105</span>
+                <span class="text-slate-400 text-sm">/ video</span>
+                <span class="text-slate-500 line-through text-sm font-semibold ml-2">$150</span>
+              </div>
+              <p class="text-xs text-cyber-cyan">Save $45 per full YouTube project</p>
+            </div>
+
+            <ul class="space-y-3 text-xs sm:text-sm text-slate-200 border-t border-slate-800 pt-6">
+              <li class="flex items-center gap-2.5"><i class="ph ph-check-circle text-cyber-cyan text-base"></i> Up to 10-15 minutes finished video</li>
+              <li class="flex items-center gap-2.5"><i class="ph ph-check-circle text-cyber-cyan text-base"></i> DaVinci Resolve storytelling pacing</li>
+              <li class="flex items-center gap-2.5"><i class="ph ph-check-circle text-cyber-cyan text-base"></i> Color correction & audio levelling</li>
+              <li class="flex items-center gap-2.5"><i class="ph ph-check-circle text-cyber-cyan text-base"></i> Custom graphic pop-ups & zooms</li>
+              <li class="flex items-center gap-2.5"><i class="ph ph-check-circle text-cyber-cyan text-base"></i> Unlimited revisions included</li>
+            </ul>
+          </div>
+
+          <a href="#contact" class="mt-8 block w-full py-3.5 rounded-xl bg-gradient-to-r from-cyber-cyan to-cyber-blue text-slate-950 font-extrabold text-center hover:shadow-neon-cyan transition-all text-sm">
+            Order Long-Form Edit
+          </a>
+        </div>
+
+        <!-- Tier 3: Monthly Retainer ($560) -->
+        <div class="glass-panel p-8 rounded-3xl border border-cyber-border hover:border-cyber-cyan/50 transition-all flex flex-col justify-between relative group">
+          <div class="space-y-6">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs font-bold uppercase border border-purple-500/20">Monthly Dedicated</span>
+                <h3 class="text-2xl font-bold text-white mt-3">Monthly Retainer</h3>
+              </div>
+              <span class="text-xs bg-amber-500/20 text-amber-400 font-bold px-2.5 py-1 rounded-md border border-amber-500/30">30% OFF</span>
+            </div>
+
+            <div class="space-y-1">
+              <div class="flex items-baseline gap-2">
+                <span class="text-4xl sm:text-5xl font-black text-white">$560</span>
+                <span class="text-slate-400 text-sm">/ month</span>
+                <span class="text-slate-500 line-through text-sm font-semibold ml-2">$800</span>
+              </div>
+              <p class="text-xs text-cyber-cyan">Save $240 monthly with locked schedule</p>
+            </div>
+
+            <ul class="space-y-3 text-xs sm:text-sm text-slate-300 border-t border-slate-800 pt-6">
+              <li class="flex items-center gap-2.5"><i class="ph ph-check-circle text-cyber-cyan text-base"></i> Bulk volume (Shorts or Long-Form mix)</li>
+              <li class="flex items-center gap-2.5"><i class="ph ph-check-circle text-cyber-cyan text-base"></i> Priority editing queue slot</li>
+              <li class="flex items-center gap-2.5"><i class="ph ph-check-circle text-cyber-cyan text-base"></i> Direct Discord channel access</li>
+              <li class="flex items-center gap-2.5"><i class="ph ph-check-circle text-cyber-cyan text-base"></i> Channel branding asset library</li>
+              <li class="flex items-center gap-2.5"><i class="ph ph-check-circle text-cyber-cyan text-base"></i> Flexible project adjustments</li>
+            </ul>
+          </div>
+
+          <a href="#contact" class="mt-8 block w-full py-3.5 rounded-xl bg-slate-800 text-white font-bold text-center hover:bg-cyber-cyan hover:text-slate-950 transition-all text-sm">
+            Reserve Monthly Slot
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Interactive Calculator Widget -->
+      <div id="calculator" class="max-w-4xl mx-auto glass-panel p-6 sm:p-10 rounded-3xl border border-cyber-cyan/40 shadow-glow-card">
+        <div class="text-center mb-8">
+          <span class="px-3 py-1 rounded-full bg-cyber-cyan/10 text-cyber-cyan text-xs font-bold uppercase tracking-wider">Dynamic Quote Tool</span>
+          <h3 class="text-2xl sm:text-3xl font-extrabold text-white mt-2">INTERACTIVE RATE ESTIMATOR</h3>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">
+            Calculate your exact total investment based on format, quantity, and turnaround options.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          
+          <!-- Controls -->
+          <div class="space-y-6">
+            
+            <!-- Type Selector -->
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Select Format</label>
+              <div class="grid grid-cols-2 gap-3">
+                <button type="button" id="calc-type-short" onclick="setCalcType('short')" class="py-2.5 px-4 rounded-xl border text-xs sm:text-sm font-bold transition-all bg-cyber-cyan text-slate-950 border-cyber-cyan">
+                  Short-Form ($15 base)
+                </button>
+                <button type="button" id="calc-type-long" onclick="setCalcType('long')" class="py-2.5 px-4 rounded-xl border text-xs sm:text-sm font-bold transition-all bg-slate-800 text-slate-300 border-cyber-border hover:border-cyber-cyan">
+                  Long-Form ($105 base)
+                </button>
+              </div>
+            </div>
+
+            <!-- Quantity Slider -->
+            <div>
+              <div class="flex justify-between items-center mb-2">
+                <label class="text-xs font-bold uppercase tracking-wider text-slate-300">Number of Videos</label>
+                <span id="quantity-val" class="text-sm font-extrabold text-cyber-cyan">1 Video</span>
+              </div>
+              <input type="range" id="calc-quantity" min="1" max="10" value="1" step="1" oninput="updateCalculator()" class="w-full accent-cyber-cyan cursor-pointer bg-slate-800 h-2 rounded-lg">
+            </div>
+
+            <!-- Rush Speed Option -->
+            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/80 border border-slate-800">
+              <div>
+                <div class="text-xs sm:text-sm font-bold text-white">Express 24-Hour Turnaround</div>
+                <div class="text-[11px] text-slate-400">+$15 per video speed fee</div>
+              </div>
+              <input type="checkbox" id="calc-express" onchange="updateCalculator()" class="w-5 h-5 accent-cyber-cyan cursor-pointer">
+            </div>
+
+          </div>
+
+          <!-- Total Calculation Card -->
+          <div class="glass-panel p-6 rounded-2xl border border-cyber-cyan/30 text-center bg-cyber-card flex flex-col justify-between h-full">
+            <div class="space-y-3">
+              <span class="text-xs uppercase font-mono tracking-widest text-slate-400">Calculated Quote</span>
+              
+              <div class="flex items-baseline justify-center gap-2">
+                <span id="calc-total" class="text-4xl sm:text-5xl font-black text-white">$15</span>
+                <span class="text-xs text-slate-400">USD</span>
+              </div>
+
+              <!-- Savings Pill -->
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30">
+                <i class="ph ph-sparkle"></i>
+                <span>You Save <strong id="calc-savings">$35</strong> with 30% Fall Discount</span>
+              </div>
+            </div>
+
+            <a href="#contact" id="calc-inquire-btn" class="mt-6 block w-full py-3 rounded-xl bg-gradient-to-r from-cyber-cyan to-cyber-blue text-slate-950 font-extrabold text-xs sm:text-sm shadow-neon-cyan hover:scale-105 transition-all">
+              Lock In This Discounted Rate
+            </a>
+          </div>
+
         </div>
       </div>
-    </div>
-  </main>
 
-  <!-- YOUTUBE VIDEO POPUP MODAL -->
-  <div id="videoModal" class="modal" onclick="closeVideo()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <button class="modal-close" onclick="closeVideo()">&times;</button>
-      <div class="modal-video-container">
-        <iframe id="activeIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <!-- Client Reviews Section -->
+  <section id="reviews" class="py-20 relative bg-cyber-bg border-t border-cyber-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+        <span class="text-cyber-cyan font-mono text-xs tracking-widest uppercase font-semibold">Testimonials</span>
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-white">WHAT CREATORS SAY</h2>
+        <p class="text-slate-400 text-sm">Feedback from YouTubers who scaled their channel retention with Levi.</p>
       </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Review 1 -->
+        <div class="glass-panel p-6 rounded-2xl border border-cyber-border flex flex-col justify-between hover:border-cyber-cyan/40 transition-all">
+          <div class="space-y-3">
+            <div class="flex text-amber-400 text-sm gap-1">
+              <i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-300 italic leading-relaxed">
+              "Levi took my raw gaming streams and edited them into viral Shorts. My channel gained over 45,000 subscribers in two months!"
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800 flex items-center gap-3 mt-4">
+            <div class="w-9 h-9 rounded-full bg-cyber-cyan/20 border border-cyber-cyan flex items-center justify-center font-bold text-cyber-cyan text-sm">
+              SJ
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white">Sarah Jenkins</div>
+              <div class="text-[10px] text-slate-400">Gaming Creator (320k Subs)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="glass-panel p-6 rounded-2xl border border-cyber-border flex flex-col justify-between hover:border-cyber-cyan/40 transition-all">
+          <div class="space-y-3">
+            <div class="flex text-amber-400 text-sm gap-1">
+              <i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-300 italic leading-relaxed">
+              "Fastest turnaround time I've experienced. Levi understands narrative hook pacing better than anyone in the video space."
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800 flex items-center gap-3 mt-4">
+            <div class="w-9 h-9 rounded-full bg-cyber-blue/20 border border-cyber-blue flex items-center justify-center font-bold text-cyber-cyan text-sm">
+              MT
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white">Mike T.</div>
+              <div class="text-[10px] text-slate-400">Twitch Streamer</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="glass-panel p-6 rounded-2xl border border-cyber-border flex flex-col justify-between hover:border-cyber-cyan/40 transition-all">
+          <div class="space-y-3">
+            <div class="flex text-amber-400 text-sm gap-1">
+              <i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-300 italic leading-relaxed">
+              "The $15 short-form pricing tier is insane value. Deliveries are always crisp and revisions are handled right away."
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800 flex items-center gap-3 mt-4">
+            <div class="w-9 h-9 rounded-full bg-purple-500/20 border border-purple-500 flex items-center justify-center font-bold text-purple-300 text-sm">
+              BC
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white">Ben Carter</div>
+              <div class="text-[10px] text-slate-400">Content Creator</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 4 -->
+        <div class="glass-panel p-6 rounded-2xl border border-cyber-border flex flex-col justify-between hover:border-cyber-cyan/40 transition-all">
+          <div class="space-y-3">
+            <div class="flex text-amber-400 text-sm gap-1">
+              <i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i><i class="ph ph-star-fill"></i>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-300 italic leading-relaxed">
+              "Levi's DaVinci Resolve color grading and GTA video breakdowns elevated my production value significantly."
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800 flex items-center gap-3 mt-4">
+            <div class="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center font-bold text-emerald-300 text-sm">
+              DK
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white">Daniel Kim</div>
+              <div class="text-[10px] text-slate-400">YouTube Creator</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-24 relative overflow-hidden bg-cyber-bg">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <div class="glass-panel p-8 sm:p-12 rounded-3xl border border-cyber-cyan/40 text-center shadow-neon-blue relative overflow-hidden">
+        
+        <div class="space-y-4 max-w-2xl mx-auto mb-10">
+          <span class="text-cyber-cyan font-mono text-xs tracking-widest uppercase font-semibold">Get In Touch</span>
+          <h2 class="text-3xl sm:text-5xl font-black text-white">LET'S WORK TOGETHER</h2>
+          <p class="text-slate-300 text-sm sm:text-base">
+            Send a direct message via Email or Discord to claim your 30% Fall Season Discounted rate or discuss custom project requirements.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+          
+          <!-- Email Card -->
+          <div class="glass-panel p-6 rounded-2xl border border-cyber-border hover:border-cyber-cyan transition-all flex flex-col items-center gap-3 group">
+            <div class="w-12 h-12 rounded-xl bg-cyber-cyan/10 border border-cyber-cyan/30 flex items-center justify-center text-cyber-cyan text-2xl group-hover:scale-110 transition-transform">
+              <i class="ph ph-envelope-simple"></i>
+            </div>
+            <div>
+              <div class="text-xs text-slate-400 font-medium uppercase tracking-wider">Email Address</div>
+              <div class="text-sm font-bold text-white mt-0.5">levisergi23@gmail.com</div>
+            </div>
+            <div class="flex gap-2 w-full mt-2">
+              <button onclick="copyToClipboard('levisergi23@gmail.com', 'Email copied!')" class="flex-1 py-2 px-3 rounded-xl bg-slate-800 text-cyber-cyan font-bold text-xs hover:bg-cyber-cyan hover:text-slate-950 transition-all flex items-center justify-center gap-1">
+                <i class="ph ph-copy"></i> Copy
+              </button>
+              <a href="mailto:levisergi23@gmail.com" class="py-2 px-3 rounded-xl bg-cyber-cyan text-slate-950 font-bold text-xs hover:bg-white transition-all flex items-center justify-center">
+                Send Mail
+              </a>
+            </div>
+          </div>
+
+          <!-- Discord Card -->
+          <div class="glass-panel p-6 rounded-2xl border border-cyber-border hover:border-cyber-cyan transition-all flex flex-col items-center gap-3 group">
+            <div class="w-12 h-12 rounded-xl bg-cyber-blue/10 border border-cyber-blue/30 flex items-center justify-center text-cyber-cyan text-2xl group-hover:scale-110 transition-transform">
+              <i class="ph ph-discord-logo"></i>
+            </div>
+            <div>
+              <div class="text-xs text-slate-400 font-medium uppercase tracking-wider">Discord Tag</div>
+              <div class="text-sm font-bold text-white mt-0.5">levisergi</div>
+            </div>
+            <div class="flex gap-2 w-full mt-2">
+              <button onclick="copyToClipboard('levisergi', 'Discord handle copied!')" class="w-full py-2 px-3 rounded-xl bg-slate-800 text-cyber-cyan font-bold text-xs hover:bg-cyber-cyan hover:text-slate-950 transition-all flex items-center justify-center gap-1">
+                <i class="ph ph-copy"></i> Copy Handle
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Toast Alert Notification -->
+        <div id="toast-message" class="hidden fixed bottom-6 right-6 z-50 glass-panel px-5 py-3 rounded-xl border border-cyber-cyan text-cyber-cyan text-xs font-bold shadow-neon-cyan flex items-center gap-2">
+          <i class="ph ph-check-circle text-lg"></i>
+          <span id="toast-text">Copied to clipboard!</span>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-8 border-t border-cyber-border bg-cyber-bg text-slate-500 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-white">LEVI THE EDITOR</span>
+        <span>© 2026. All rights reserved.</span>
+      </div>
+      <a href="#overview" class="hover:text-cyber-cyan transition-colors">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <!-- Video Player Modal -->
+  <div id="video-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-black/85 backdrop-blur-md">
+    <div class="relative w-full max-w-4xl glass-panel rounded-2xl overflow-hidden border border-cyber-cyan/50 shadow-neon-blue">
+      
+      <!-- Modal Title Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-cyber-border bg-slate-900/90">
+        <h3 id="modal-title" class="text-sm sm:text-base font-bold text-white truncate pr-4">Video Preview</h3>
+        <button onclick="closeVideoModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors">
+          <i class="ph ph-x text-2xl"></i>
+        </button>
+      </div>
+
+      <!-- iFrame Player Container -->
+      <div class="relative aspect-video w-full bg-black">
+        <iframe id="modal-iframe" class="w-full h-full" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+
     </div>
   </div>
 
-  <footer>
-    <p>&copy; 2026 Levi The Editor. All rights reserved.</p>
-  </footer>
-
+  <!-- JavaScript Application Logic -->
   <script>
-    function switchTab(tabName) {
-      document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
-      
-      document.getElementById('page-' + tabName).classList.add('active');
-      document.getElementById('tab-' + tabName).classList.add('active');
-      
-      window.scrollTo(0, 0);
-    }
+    // Navigation Drawer Controls
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 
-    function openVideo(videoId) {
-      const modal = document.getElementById('videoModal');
-      const iframe = document.getElementById('activeIframe');
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+
+    // Works Category Filtering
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => {
+          b.classList.remove('bg-cyber-cyan', 'text-slate-950', 'shadow-neon-cyan');
+          b.classList.add('text-slate-400');
+        });
+        btn.classList.add('bg-cyber-cyan', 'text-slate-950', 'shadow-neon-cyan');
+        btn.classList.remove('text-slate-400');
+
+        const filter = btn.getAttribute('data-filter');
+
+        projectCards.forEach(card => {
+          if (filter === 'all' || card.getAttribute('data-category') === filter) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // YouTube Modal Controls
+    function openVideoModal(videoId, title) {
+      const modal = document.getElementById('video-modal');
+      const iframe = document.getElementById('modal-iframe');
+      const modalTitle = document.getElementById('modal-title');
+
+      modalTitle.innerText = title;
       iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-      modal.classList.add('active');
+      modal.classList.remove('hidden');
     }
 
-    function closeVideo() {
-      const modal = document.getElementById('videoModal');
-      const iframe = document.getElementById('activeIframe');
-      iframe.src = "";
-      modal.classList.remove('active');
+    function closeVideoModal() {
+      const modal = document.getElementById('video-modal');
+      const iframe = document.getElementById('modal-iframe');
+
+      iframe.src = '';
+      modal.classList.add('hidden');
     }
+
+    document.getElementById('video-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'video-modal') {
+        closeVideoModal();
+      }
+    });
+
+    // Rate Calculator State Logic
+    let currentCalcType = 'short';
+
+    function setCalcType(type) {
+      currentCalcType = type;
+      const shortBtn = document.getElementById('calc-type-short');
+      const longBtn = document.getElementById('calc-type-long');
+
+      if (type === 'short') {
+        shortBtn.className = "py-2.5 px-4 rounded-xl border text-xs sm:text-sm font-bold transition-all bg-cyber-cyan text-slate-950 border-cyber-cyan";
+        longBtn.className = "py-2.5 px-4 rounded-xl border text-xs sm:text-sm font-bold transition-all bg-slate-800 text-slate-300 border-cyber-border hover:border-cyber-cyan";
+      } else {
+        longBtn.className = "py-2.5 px-4 rounded-xl border text-xs sm:text-sm font-bold transition-all bg-cyber-cyan text-slate-950 border-cyber-cyan";
+        shortBtn.className = "py-2.5 px-4 rounded-xl border text-xs sm:text-sm font-bold transition-all bg-slate-800 text-slate-300 border-cyber-border hover:border-cyber-cyan";
+      }
+      updateCalculator();
+    }
+
+    function updateCalculator() {
+      const qty = parseInt(document.getElementById('calc-quantity').value);
+      const isExpress = document.getElementById('calc-express').checked;
+      
+      document.getElementById('quantity-val').innerText = qty === 1 ? "1 Video" : `${qty} Videos`;
+
+      // Rates (Short-Form set to $15 base discounted rate, Long-Form set to $105 base)
+      const baseShortOriginal = 50;
+      const baseShortDiscounted = 15;
+
+      const baseLongOriginal = 150;
+      const baseLongDiscounted = 105;
+
+      const expressOriginal = 25;
+      const expressDiscounted = 15;
+
+      let perUnitOriginal = currentCalcType === 'short' ? baseShortOriginal : baseLongOriginal;
+      let perUnitDiscounted = currentCalcType === 'short' ? baseShortDiscounted : baseLongDiscounted;
+
+      if (isExpress) {
+        perUnitOriginal += expressOriginal;
+        perUnitDiscounted += expressDiscounted;
+      }
+
+      const totalOriginal = perUnitOriginal * qty;
+      const totalDiscounted = perUnitDiscounted * qty;
+      const totalSavings = totalOriginal - totalDiscounted;
+
+      document.getElementById('calc-total').innerText = `$${totalDiscounted}`;
+      document.getElementById('calc-savings').innerText = `$${totalSavings}`;
+    }
+
+    // Copy to Clipboard Utility
+    function copyToClipboard(text, customMsg) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+        } catch (err) {
+          console.error('Fallback copy failed', err);
+        }
+        document.body.removeChild(textArea);
+      }
+
+      const toast = document.getElementById('toast-message');
+      const toastText = document.getElementById('toast-text');
+      toastText.innerText = customMsg || 'Copied to clipboard!';
+      
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3000);
+    }
+
+    window.onload = function() {
+      updateCalculator();
+    };
   </script>
 </body>
 </html>
